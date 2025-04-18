@@ -1,0 +1,2435 @@
+/* İhaleler Sayfası Stilleri */
+.auctions-container {
+    padding: 30px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.auctions-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.auctions-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+    position: relative;
+    display: inline-block;
+}
+
+.auctions-header h2::after {
+    content: '';
+    position: absolute;
+    width: 70%;
+    height: 3px;
+    background-color: var(--secondary-color);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.auctions-header p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* İhale Oluştur Butonu Stilleri */
+.create-auction-button-container {
+    margin-top: 25px;
+    display: block;
+    text-align: center;
+}
+
+.btn-create-auction {
+    background-color: #000000; /* Black renk teması */
+    color: #7FFFD4; /* Aquamarine renk teması */
+    border: 2px solid #7FFFD4;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    min-width: 180px;
+    margin: 5px auto;
+}
+
+.btn-create-auction:hover {
+    background-color: #7FFFD4;
+    color: #000000;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+.btn-create-auction i {
+    font-size: 18px;
+}
+
+/* İhale Oluşturma Formu Stilleri */
+.create-auction-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 40px;
+    display: none; /* Başlangıçta gizli */
+}
+
+.create-auction-container.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.create-auction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.create-auction-header h3 {
+    font-size: 24px;
+    color: #000000;
+    font-weight: 600;
+}
+
+.create-auction-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #666;
+    transition: color 0.3s;
+}
+
+.create-auction-close:hover {
+    color: #000000;
+}
+
+/* Form Bölümleri */
+.create-auction-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.create-auction-tab {
+    padding: 12px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    color: #666;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.create-auction-tab.active {
+    color: #000000;
+}
+
+.create-auction-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #7FFFD4;
+    border-radius: 2px 2px 0 0;
+}
+
+.create-auction-tab-content {
+    display: none;
+}
+
+.create-auction-tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Tablo Stilleri */
+.material-request-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.material-request-table th,
+.material-request-table td {
+    padding: 20px 18px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.material-request-table th {
+    background-color: #222;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    letter-spacing: 0.5px;
+}
+
+.material-request-table tbody tr:hover {
+    background-color: #f0fffc;
+}
+
+.material-request-table input,
+.material-request-table select,
+.material-request-table textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+    min-height: 48px;
+    line-height: 1.5;
+}
+
+.material-request-table input::placeholder,
+.material-request-table textarea::placeholder {
+    color: #999;
+    opacity: 0.7;
+    font-size: 15px;
+}
+
+.material-request-table select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 18px;
+    padding-right: 45px;
+    cursor: pointer;
+    min-height: 48px;
+    color: #333;
+    font-weight: 500;
+}
+
+.material-request-table input:focus,
+.material-request-table select:focus,
+.material-request-table textarea:focus {
+    border-color: #7FFFD4;
+    box-shadow: 0 0 0 4px rgba(127, 255, 212, 0.25);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.material-request-table input:hover,
+.material-request-table select:hover,
+.material-request-table textarea:hover {
+    border-color: #999;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.material-request-table textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.table-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    padding: 8px;
+    align-items: center;
+    min-height: 54px;
+    background-color: rgba(249, 249, 249, 0.5);
+    border-radius: 8px;
+}
+
+.primary-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+}
+
+.secondary-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+    padding-top: 6px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.table-action-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    min-height: 38px;
+    margin: 0 auto;
+}
+
+.table-action-btn i {
+    font-size: 20px;
+    line-height: 1;
+    display: block;
+    text-align: center;
+}
+
+.table-action-btn.drag-handle {
+    color: #555;
+    cursor: grab;
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.table-action-btn.drag-handle:active {
+    cursor: grabbing;
+    background-color: rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table-action-btn.details {
+    color: #8A2BE2; /* BlueViolet */
+    background-color: rgba(138, 43, 226, 0.05);
+    border: 1px solid rgba(138, 43, 226, 0.15);
+}
+
+.table-action-btn.details:hover {
+    background-color: rgba(138, 43, 226, 0.12);
+    color: #7016c0;
+}
+
+.table-action-btn.edit {
+    color: #2196F3;
+    background-color: rgba(33, 150, 243, 0.05);
+    border: 1px solid rgba(33, 150, 243, 0.15);
+}
+
+.table-action-btn.edit:hover {
+    background-color: rgba(33, 150, 243, 0.12);
+    color: #0c7cd5;
+}
+
+.table-action-btn.duplicate {
+    color: #FF9800;
+    background-color: rgba(255, 152, 0, 0.05);
+    border: 1px solid rgba(255, 152, 0, 0.15);
+}
+
+.table-action-btn.duplicate:hover {
+    background-color: rgba(255, 152, 0, 0.12);
+    color: #e68900;
+}
+
+.table-action-btn.delete {
+    color: #F44336;
+    background-color: rgba(244, 67, 54, 0.05);
+    border: 1px solid rgba(244, 67, 54, 0.15);
+}
+
+.table-action-btn.delete:hover {
+    background-color: rgba(244, 67, 54, 0.12);
+    color: #e53935;
+}
+
+.table-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.table-action-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* Sürükleme sırasındaki stil */
+.material-request-table tr.dragging {
+    opacity: 0.5;
+    background-color: #f0f8ff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 999;
+}
+
+.material-request-table tr.drag-over {
+    border-top: 3px solid #7FFFD4;
+}
+
+/* Detayları gösterme modalı */
+.material-details-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    overflow: auto;
+}
+
+.material-details-content {
+    position: relative;
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    animation: slideDown 0.3s ease;
+}
+
+.material-details-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #777;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.material-details-close:hover {
+    color: #000;
+}
+
+.material-details-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.material-details-header h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+}
+
+.material-details-body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.material-details-item {
+    margin-bottom: 20px;
+}
+
+.material-details-item label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.material-details-item p {
+    font-size: 16px;
+    color: #333;
+    margin: 0;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    min-height: 40px;
+    border: 1px solid #eee;
+}
+
+.material-details-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.material-details-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #f0f0f0;
+    text-align: right;
+}
+
+.material-details-footer button {
+    background-color: #000000;
+    color: #7FFFD4;
+    border: 2px solid #7FFFD4;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.material-details-footer button:hover {
+    background-color: #7FFFD4;
+    color: #000000;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive tasarım */
+@media (max-width: 768px) {
+    .material-details-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .material-details-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 20px;
+    }
+}
+
+.add-row-btn {
+    background-color: #000000;
+    color: #7FFFD4;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.add-row-btn:hover {
+    background-color: #111;
+    transform: translateY(-2px);
+}
+
+.excel-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.excel-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.excel-import-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.excel-export-btn {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+}
+
+.excel-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Form Alanları */
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section h4 {
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #7FFFD4;
+    outline: none;
+}
+
+.form-control.textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Onay Kutuları Stilleri */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #7FFFD4;
+}
+
+/* Alt Butonlar */
+.auction-form-actions {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+}
+
+.btn-back {
+    background-color: #f5f5f5;
+    color: #333;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-back:hover {
+    background-color: #e0e0e0;
+}
+
+.auction-action-btns {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-show-drafts {
+    background-color: #607D8B;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-save-draft {
+    background-color: #FF9800;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-publish {
+    background-color: #000000;
+    color: #7FFFD4;
+    border: 2px solid #7FFFD4;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-show-drafts:hover,
+.btn-save-draft:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-publish:hover {
+    background-color: #7FFFD4;
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+/* Sekme Stilleri */
+.auctions-tabs {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.tabs-nav {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    background-color: #f9f9f9;
+}
+
+.tab-btn {
+    padding: 15px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.tab-btn.active {
+    background-color: #fff;
+    border-bottom: 3px solid var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.tab-content {
+    padding: 20px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Arama ve Filtreleme */
+.auctions-search-bar {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-filters {
+    display: flex;
+    flex: 1;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.auction-search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.filter-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+    min-width: 150px;
+}
+
+.btn-reset {
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #666;
+}
+
+.btn-reset:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* İhale Listesi */
+.auctions-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.auction-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.auction-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.auction-status {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+}
+
+.status-indicator {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #ccc;
+    display: block;
+    position: relative;
+}
+
+.status-indicator:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    top: -35px;
+    right: -40px;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.status-indicator:hover:before {
+    visibility: visible;
+    opacity: 1;
+}
+
+.status-indicator.active {
+    background-color: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+.status-indicator.closing-soon {
+    background-color: #FFC107;
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+    animation: pulse 1.5s infinite;
+}
+
+.status-indicator.closed {
+    background-color: #F44336;
+    box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+}
+
+.auction-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.auction-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.auction-card:hover .auction-image img {
+    transform: scale(1.05);
+}
+
+.auction-details {
+    padding: 20px;
+}
+
+.auction-title {
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    height: 48px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.auction-info {
+    margin-bottom: 20px;
+}
+
+.auction-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.auction-meta i {
+    margin-right: 5px;
+}
+
+.auction-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.starting-price {
+    color: #666;
+}
+
+.current-bid {
+    color: var(--primary-color);
+}
+
+.auction-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.time-left {
+    font-weight: 600;
+}
+
+.time-left.urgent {
+    color: #F44336;
+}
+
+.auction-winner {
+    margin-top: 5px;
+    font-weight: 600;
+    color: #4CAF50;
+}
+
+.auction-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-view-auction, .btn-quick-bid {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-view-auction {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-view-auction:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-quick-bid {
+    background-color: var(--secondary-color);
+    border: 1px solid transparent;
+    color: var(--primary-color);
+}
+
+.btn-quick-bid:hover {
+    background-color: #7fffd4;
+}
+
+/* Yükleniyor */
+.loading-auctions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    gap: 20px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--secondary-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Bulunamadı durumu */
+.no-auctions {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 0;
+    color: #666;
+}
+
+.no-auctions i {
+    font-size: 60px;
+    margin-bottom: 20px;
+    color: #ddd;
+}
+
+.no-auctions h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.error-message {
+    grid-column: 1 / -1;
+    background-color: rgba(244, 67, 54, 0.1);
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    color: #F44336;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.error-message i {
+    font-size: 36px;
+}
+
+/* Sayfalama */
+.auctions-pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.pagination-btn {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: #f0f0f0;
+}
+
+.pagination-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.pagination-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 5px rgba(255, 193, 7, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+    }
+}
+
+/* Responsive Tasarım */
+@media (max-width: 992px) {
+    .auctions-list {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .auctions-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-filters {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .auction-search-input {
+        width: 100%;
+    }
+    
+    .filter-container {
+        width: 100%;
+    }
+    
+    .auctions-search-bar {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn-reset {
+        width: 100%;
+    }
+}
+
+/* Çoklu Lokasyon Filtreleme Stilleri */
+.multi-select-wrapper {
+    position: relative;
+    min-width: 180px;
+    margin: 0 5px;
+}
+
+.multi-select-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.multi-select-header:hover {
+    border-color: #aaa;
+}
+
+.multi-select-placeholder {
+    color: #333;
+    margin-right: 5px;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+.multi-select-selected-count {
+    color: #666;
+    font-size: 12px;
+}
+
+.multi-select-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 300px;
+    max-height: 350px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 100;
+    margin-top: 5px;
+    display: none;
+}
+
+.multi-select-dropdown.active {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.multi-select-search {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+
+.multi-select-search input {
+    width: 100%;
+    padding: 8px 15px 8px 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.multi-select-search i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.multi-select-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.multi-select-actions button {
+    background: none;
+    border: none;
+    color: #2196F3;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 3px 5px;
+}
+
+.multi-select-actions button:hover {
+    text-decoration: underline;
+}
+
+.multi-select-options {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 5px 0;
+}
+
+.multi-select-option {
+    padding: 8px 15px;
+    transition: background-color 0.2s ease;
+}
+
+.multi-select-option:hover {
+    background-color: #f5f5f5;
+}
+
+.multi-select-option label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+.multi-select-option input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.multi-select-footer {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.multi-select-footer button {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.multi-select-footer button:hover {
+    background-color: #7fffd4;
+}
+
+/* Responsive düzenlemeler */
+@media (max-width: 768px) {
+    .multi-select-wrapper {
+        width: 100%;
+        margin: 5px 0;
+    }
+    
+    .multi-select-dropdown {
+        width: 100%;
+    }
+}
+
+/* Form Navigasyon Butonları */
+.form-navigation {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.nav-btn {
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+}
+
+.next-tab {
+    background-color: #000000;
+    color: #7FFFD4;
+    border: 2px solid #7FFFD4;
+}
+
+.next-tab:hover {
+    background-color: #7FFFD4;
+    color: #000000;
+    transform: translateY(-2px);
+}
+
+.prev-tab {
+    background-color: #f5f5f5;
+    color: #333;
+    margin-right: 15px;
+}
+
+.prev-tab:hover {
+    background-color: #e0e0e0;
+}
+
+.nav-btn i {
+    font-size: 16px;
+}
+
+/* Otomatik oluşturulan alanlar için stil */
+.auto-generated-field {
+    background-color: #f0fffc !important;
+    color: #00866f !important;
+    cursor: not-allowed !important;
+    border: 2px solid #00b597 !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    padding: 14px 18px !important;
+    font-size: 16px !important;
+    min-width: 180px; /* Talep numarası için minimum genişlik */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Okunabilirlik için tooltip */
+.auto-generated-field:hover {
+    position: relative;
+}
+
+.auto-generated-field:hover::after {
+    content: 'Sistem tarafından otomatik oluşturuldu';
+    position: absolute;
+    left: 0;
+    bottom: -30px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+/* Malzeme Talep Formu Gelişmiş Stillemesi */
+.create-auction-tab-content#material-request {
+    background-color: #f9fffe;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0f5f2;
+}
+
+.create-auction-tab[data-tab="material-request"] {
+    background-color: #222;
+    color: white;
+    font-weight: 600;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.create-auction-tab[data-tab="material-request"].active {
+    background-color: #00b597;
+    color: white;
+    box-shadow: 0 -4px 10px rgba(0, 181, 151, 0.2);
+}
+
+.create-auction-tab[data-tab="material-request"].active::after {
+    background-color: #00b597;
+}
+
+.excel-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    justify-content: flex-end;
+}
+
+.excel-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #fff;
+    color: #222;
+    border: 2px solid #ddd;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.excel-import-btn {
+    border-color: #00b597;
+    color: #00b597;
+}
+
+.excel-export-btn {
+    border-color: #222;
+    color: #222;
+}
+
+.excel-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.excel-import-btn:hover {
+    background-color: #00b597;
+    color: white;
+}
+
+.excel-export-btn:hover {
+    background-color: #222;
+    color: white;
+}
+
+/* Malzeme Talep Tablosu Gelişmiş Tasarım */
+.table-container {
+    margin-bottom: 25px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #7FFFD4 #000000;
+}
+
+/* Yatay Kaydırma Çubuğu Stilleri */
+.table-container::-webkit-scrollbar {
+    height: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: #000000;
+    border: 2px solid #f0f0f0;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #7FFFD4;
+}
+
+.table-container::-webkit-scrollbar-button {
+    display: none;
+}
+
+.material-request-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    overflow: hidden;
+    min-width: 1000px; /* Minimum genişlik garantisi */
+}
+
+.material-request-table th,
+.material-request-table td {
+    padding: 20px 18px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.material-request-table th {
+    background-color: #222;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    letter-spacing: 0.5px;
+}
+
+.material-request-table tbody tr:hover {
+    background-color: #f0fffc;
+}
+
+.material-request-table input,
+.material-request-table select,
+.material-request-table textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+    min-height: 48px;
+    line-height: 1.5;
+}
+
+.material-request-table input::placeholder,
+.material-request-table textarea::placeholder {
+    color: #999;
+    opacity: 0.7;
+    font-size: 15px;
+}
+
+.material-request-table input:focus,
+.material-request-table select:focus,
+.material-request-table textarea:focus {
+    border-color: #7FFFD4;
+    box-shadow: 0 0 0 4px rgba(127, 255, 212, 0.25);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.material-request-table input:hover,
+.material-request-table select:hover,
+.material-request-table textarea:hover {
+    border-color: #999;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+}
+
+.material-request-table textarea {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Auto Generated Field - Talep numarası için özel stil */
+.auto-generated-field {
+    background-color: #f0fffc !important;
+    color: #00866f !important;
+    cursor: not-allowed !important;
+    border: 2px solid #00b597 !important;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+    padding: 14px 18px !important;
+    font-size: 16px !important;
+    min-width: 180px; /* Talep numarası için minimum genişlik */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Table Hizalama ve Responsive Düzenlemeler */
+@media (max-width: 1200px) {
+    .material-request-table {
+        font-size: 15px;
+    }
+    
+    .material-request-table input,
+    .material-request-table select,
+    .material-request-table textarea {
+        padding: 12px 16px;
+        font-size: 15px;
+        min-height: 46px;
+    }
+    
+    .auto-generated-field {
+        min-width: 160px;
+        padding: 12px 16px !important;
+        font-size: 15px !important;
+    }
+}
+
+@media (max-width: 991px) {
+    .material-request-table th {
+        padding: 16px 14px;
+        font-size: 14px;
+    }
+    
+    .material-request-table td {
+        padding: 16px 14px;
+    }
+    
+    .material-request-table input,
+    .material-request-table select,
+    .material-request-table textarea {
+        padding: 12px 14px;
+        font-size: 14px;
+        min-height: 44px;
+    }
+    
+    .auto-generated-field {
+        min-width: 140px;
+        padding: 12px 14px !important;
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .material-request-table {
+        font-size: 14px;
+    }
+    
+    .material-request-table input,
+    .material-request-table select,
+    .material-request-table textarea {
+        padding: 10px 12px;
+        font-size: 14px;
+        min-height: 42px;
+    }
+    
+    .auto-generated-field {
+        min-width: 120px;
+        padding: 10px 12px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* Dropdown Seçici için Gelişmiş Stil */
+.material-request-table select option {
+    padding: 12px;
+    font-size: 15px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Data-table Stili */
+.material-request-table input[type="date"] {
+    position: relative;
+    padding-right: 45px;
+    min-height: 48px;
+    cursor: pointer;
+    color: #333;
+    min-width: 180px;
+}
+
+/* Number input için özel stil */
+.material-request-table input[type="number"] {
+    text-align: right;
+    padding-right: 18px;
+    min-height: 48px;
+    min-width: 120px;
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 5px;
+    }
+    
+    .material-request-table {
+        font-size: 13px;
+    }
+    .material-request-table input,
+    .material-request-table select,
+    .material-request-table textarea {
+        padding: 8px 10px;
+        font-size: 13px;
+        min-height: 36px;
+    }
+}
+
+/* Malzeme Talep Formu - Spesifik Alan Stilleri */
+.material-request-table input[name="request_no"] {
+    min-width: 200px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.material-request-table input[name="date"] {
+    min-width: 200px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.material-request-table select[name="location"] {
+    min-width: 220px;
+    font-weight: 500;
+}
+
+.material-request-table input[name="product_name"] {
+    min-width: 260px;
+    font-weight: 500;
+}
+
+.material-request-table input[name="quantity"] {
+    min-width: 150px;
+    text-align: right;
+    font-weight: 600;
+}
+
+.material-request-table select[name="unit"] {
+    min-width: 140px;
+    font-weight: 500;
+}
+
+.material-request-table textarea[name="product_specs"] {
+    min-width: 300px;
+    min-height: 130px;
+    line-height: 1.6;
+}
+
+.material-request-table input[name="usage_area"] {
+    min-width: 240px;
+    font-weight: 500;
+}
+
+.material-request-table select[name="payment_type"] {
+    min-width: 200px;
+    font-weight: 500;
+}
+
+/* Form Elemanları Genel İyileştirmeleri */
+.material-request-table input,
+.material-request-table select,
+.material-request-table textarea {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    min-height: 54px;
+    line-height: 1.5;
+}
+
+/* Responsive Düzenlemeler */
+@media (max-width: 1200px) {
+    .material-request-table input[name="request_no"] {
+        min-width: 180px;
+    }
+    
+    .material-request-table input[name="date"] {
+        min-width: 180px;
+    }
+    
+    .material-request-table select[name="location"] {
+        min-width: 200px;
+    }
+    
+    .material-request-table input[name="product_name"] {
+        min-width: 230px;
+    }
+    
+    .material-request-table input[name="quantity"] {
+        min-width: 130px;
+    }
+    
+    .material-request-table select[name="unit"] {
+        min-width: 120px;
+    }
+    
+    .material-request-table textarea[name="product_specs"] {
+        min-width: 250px;
+        min-height: 110px;
+    }
+    
+    .material-request-table input[name="usage_area"] {
+        min-width: 200px;
+    }
+    
+    .material-request-table select[name="payment_type"] {
+        min-width: 180px;
+    }
+    
+    .material-request-table input,
+    .material-request-table select,
+    .material-request-table textarea {
+        padding: 14px 18px;
+        font-size: 15px;
+        min-height: 50px;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 991px) {
+    .material-request-table input[name="request_no"] {
+        min-width: 160px;
+    }
+    
+    .material-request-table input[name="date"] {
+        min-width: 160px;
+    }
+    
+    .material-request-table select[name="location"] {
+        min-width: 180px;
+    }
+    
+    .material-request-table input[name="product_name"] {
+        min-width: 200px;
+    }
+    
+    .material-request-table input[name="quantity"] {
+        min-width: 120px;
+    }
+    
+    .material-request-table select[name="unit"] {
+        min-width: 110px;
+    }
+    
+    .material-request-table textarea[name="product_specs"] {
+        min-width: 220px;
+        min-height: 100px;
+    }
+    
+    .material-request-table input[name="usage_area"] {
+        min-width: 180px;
+    }
+    
+    .material-request-table select[name="payment_type"] {
+        min-width: 160px;
+    }
+    
+    .material-request-table input,
+    .material-request-table select,
+    .material-request-table textarea {
+        padding: 12px 16px;
+        font-size: 14px;
+        min-height: 46px;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 767px) {
+    .material-request-table select[name="location"],
+    .material-request-table input[name="product_name"],
+    .material-request-table input[name="quantity"],
+    .material-request-table select[name="unit"],
+    .material-request-table textarea[name="product_specs"],
+    .material-request-table input[name="usage_area"],
+    .material-request-table select[name="payment_type"],
+    .material-request-table input[name="request_no"],
+    .material-request-table input[name="date"] {
+        min-width: 100%; /* Mobil görünümde tam genişlik */
+        padding: 12px 14px;
+        min-height: 44px;
+    }
+    
+    .material-request-table textarea[name="product_specs"] {
+        min-height: 90px;
+    }
+    
+    .material-request-table input,
+    .material-request-table select,
+    .material-request-table textarea {
+        border-radius: 6px;
+    }
+}
+
+/* Kullanım Yeri ve Ürün Özellikleri için otomatik genişleyen textarea */
+.auto-expandable {
+    min-height: 48px;
+    height: auto;
+    overflow-y: hidden;
+    resize: vertical;
+    transition: height 0.2s ease;
+}
+
+/* Ürün Özellikleri textarea'sı için özel stil */
+.material-request-table textarea[name="product_specs"] {
+    min-width: 300px;
+    min-height: 130px;
+    max-height: 300px;
+    resize: vertical;
+    line-height: 1.6;
+    overflow-y: auto;
+}
+
+/* Kullanım Yeri textarea'sı için özel stil */
+.material-request-table textarea[name="usage_area"] {
+    min-height: 48px;
+    max-height: 200px;
+    resize: vertical;
+    line-height: 1.5;
+    overflow-y: auto;
+    min-width: 240px;
+    font-weight: 500;
+}
+
+/* Excel İşlemleri Bildirimleri */
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 350px;
+}
+
+.notification {
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: white;
+    font-weight: 500;
+    animation: slideIn 0.3s ease forwards;
+    position: relative;
+    min-width: 280px;
+}
+
+.notification.info {
+    background-color: #2196F3;
+    border-left: 4px solid #0c7cd5;
+}
+
+.notification.success {
+    background-color: #4CAF50;
+    border-left: 4px solid #2e7d32;
+}
+
+.notification.warning {
+    background-color: #FF9800;
+    border-left: 4px solid #ef6c00;
+}
+
+.notification.error {
+    background-color: #F44336;
+    border-left: 4px solid #c62828;
+}
+
+.notification.hide {
+    animation: slideOut 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Excel Yükleme Göstergesi */
+.excel-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.excel-loader-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    min-width: 300px;
+}
+
+.excel-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: #00b597;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px auto;
+}
+
+.excel-loader-message {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.excel-sample-row {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 14px;
+    color: #666;
+}
+
+.excel-sample-row code {
+    display: block;
+    font-family: Consolas, Monaco, 'Andale Mono', monospace;
+    padding: 8px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin-top: 5px;
+}
+
+/* Excel buton animasyonları */
+.excel-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.excel-btn:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+}
+
+.excel-btn:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    20% {
+        transform: scale(25, 25);
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(40, 40);
+    }
+}
+
+/* Yardım Tooltip */
+.excel-help-tip {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: center;
+    background-color: #00b597;
+    color: white;
+    border-radius: 50%;
+    cursor: help;
+    position: relative;
+}
+
+.excel-help-tip:hover::before {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    text-align: left;
+    padding: 10px;
+    border-radius: 5px;
+    width: 250px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0;
+    pointer-events: none;
+    animation: fadeIn 0.3s forwards;
+    z-index: 10;
+    font-weight: normal;
+}
+
+.excel-help-tip:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-bottom-color: #333;
+    animation: fadeIn 0.3s forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Taslak İhaleler Modalı */
+.draft-auctions-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    overflow: auto;
+}
+
+.draft-auctions-content {
+    position: relative;
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 900px;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    animation: slideDown 0.3s ease;
+}
+
+.draft-auctions-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: #777;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.draft-auctions-close:hover {
+    color: #000;
+}
+
+.draft-auctions-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.draft-auctions-header h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #222;
+    margin: 0;
+}
+
+.draft-auctions-search {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.draft-auctions-search input {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.draft-auctions-search input:focus {
+    border-color: #7FFFD4;
+    box-shadow: 0 0 0 3px rgba(127, 255, 212, 0.25);
+    outline: none;
+}
+
+.draft-auctions-search i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+}
+
+.draft-auctions-list {
+    max-height: 500px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.draft-auction-item {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.draft-auction-item:last-child {
+    border-bottom: none;
+}
+
+.draft-auction-item:hover {
+    background-color: #f5f9ff;
+}
+
+.draft-auction-details {
+    flex: 1;
+}
+
+.draft-auction-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #222;
+}
+
+.draft-auction-meta {
+    display: flex;
+    gap: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.draft-auction-meta div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.draft-auction-requests {
+    background-color: #f0f8ff;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.request-numbers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.request-number {
+    background-color: #e0f0ff;
+    border: 1px solid #b8deff;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 13px;
+    color: #0077cc;
+    font-weight: 500;
+}
+
+.draft-auction-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.draft-auction-actions button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-load-draft {
+    background-color: #222;
+    color: #7FFFD4;
+    border: 1px solid #7FFFD4;
+}
+
+.btn-load-draft:hover {
+    background-color: #7FFFD4;
+    color: #222;
+}
+
+.btn-delete-draft {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+    border: 1px solid rgba(244, 67, 54, 0.2);
+}
+
+.btn-delete-draft:hover {
+    background-color: rgba(244, 67, 54, 0.2);
+}
+
+.draft-auctions-footer {
+    margin-top: 20px;
+    text-align: right;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.draft-auctions-footer button {
+    background-color: #222;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.draft-auctions-footer button:hover {
+    background-color: #333;
+}
+
+.no-drafts-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: #777;
+}
+
+.no-drafts-message i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    color: #ccc;
+}
+
+.no-drafts-message p {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Kaydırma çubuğu stilleri */
+.draft-auctions-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.draft-auctions-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.draft-auctions-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.draft-auctions-list::-webkit-scrollbar-thumb:hover {
+    background: #7FFFD4;
+}
+
+@media (max-width: 768px) {
+    .draft-auctions-content {
+        width: 95%;
+        padding: 20px;
+        margin: 10% auto;
+    }
+    
+    .draft-auction-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .draft-auction-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .draft-auction-actions {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+} 

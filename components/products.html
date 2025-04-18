@@ -1,0 +1,641 @@
+<!-- Ürünler Sayfası Bileşeni -->
+<div class="container products-page-container">
+    <div class="page-header">
+        <h1>Ürünler</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <!--<li class="breadcrumb-item"><a href="#/">Anasayfaya Dön</a></li> Silindi -->
+                <!--<li class="breadcrumb-item active" aria-current="page">Ürünler</li>-->
+            </ol>
+        </nav>
+    </div>
+
+    <div class="products-layout">
+        <aside class="filters-sidebar">
+            <button id="toggleFiltersMobile" class="btn-toggle-filters-mobile">
+                <i class="fas fa-filter"></i> Filtrele
+            </button>
+            <div class="filters-content">
+                <h3>Filtreler</h3>
+                <div class="filter-group basic-filters">
+                    <h4>Temel Filtreler</h4>
+                    <div class="filter-item">
+                        <label for="categoryFilter">Kategori</label>
+                        <select id="categoryFilter" class="form-select">
+                            <option value="">Tüm Kategoriler</option>
+                            <option value="Yapı Malzemeleri Grubu">Yapı Malzemeleri Grubu</option>
+                            <option value="Mantolama Malzemeleri Grubu">Mantolama Malzemeleri Grubu</option>
+                            <option value="Hırdavat/Nalbur Malzemeleri Grubu">Hırdavat/Nalbur Malzemeleri Grubu</option>
+                            <option value="Elektrik Malzemeleri Grubu">Elektrik Malzemeleri Grubu</option>
+                            <option value="İnşaat Mekaniği Malzemeleri Grubu">İnşaat Mekaniği Malzemeleri Grubu</option>
+                            <!-- Kategoriler dinamik olarak yüklenecek -->
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label for="productNameFilter">Ürün Adı</label>
+                        <select id="productNameFilter" class="form-select">
+                            <option value="">Tüm Ürünler</option>
+                            <!-- Ürün isimleri dinamik olarak yüklenecek -->
+                        </select>
+                    </div>
+                    <div class="filter-item detailed-product-filters">
+                        <label>Detaylı Ürün Filtreleri</label>
+                        <div class="checkbox-list">
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-cimento" value="Çimento" class="filter-checkbox detailed-product-checkbox"><label for="filter-cimento">Çimento</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-alci" value="Alçı" class="filter-checkbox detailed-product-checkbox"><label for="filter-alci">Alçı</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-bims" value="Bims" class="filter-checkbox detailed-product-checkbox"><label for="filter-bims">Bims</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-tugla" value="Tuğla" class="filter-checkbox detailed-product-checkbox"><label for="filter-tugla">Tuğla</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-kiremit" value="Kiremit / Mahya" class="filter-checkbox detailed-product-checkbox"><label for="filter-kiremit">Kiremit / Mahya</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-kereste" value="Kereste" class="filter-checkbox detailed-product-checkbox"><label for="filter-kereste">Kereste</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-osb" value="OSB (9-18 mm)" class="filter-checkbox detailed-product-checkbox"><label for="filter-osb">OSB (9-18 mm)</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-plywood" value="Plywood" class="filter-checkbox detailed-product-checkbox"><label for="filter-plywood">Plywood</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-kirec" value="Kireç" class="filter-checkbox detailed-product-checkbox"><label for="filter-kirec">Kireç</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-tas-yunu" value="Taş Yünü" class="filter-checkbox detailed-product-checkbox"><label for="filter-tas-yunu">Taş Yünü</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-cam-yunu" value="Cam Yünü" class="filter-checkbox detailed-product-checkbox"><label for="filter-cam-yunu">Cam Yünü</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-brut-beton" value="Brüt Beton Astarı" class="filter-checkbox detailed-product-checkbox"><label for="filter-brut-beton">Brüt Beton Astarı</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-xps" value="XPS (Ekstrüde Polistiren)" class="filter-checkbox detailed-product-checkbox"><label for="filter-xps">XPS (Ekstrüde Polistiren)</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-eps" value="EPS (Ekspande Polistiren)" class="filter-checkbox detailed-product-checkbox"><label for="filter-eps">EPS (Ekspande Polistiren)</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-gaz-beton" value="Gaz Beton (Ytong)" class="filter-checkbox detailed-product-checkbox"><label for="filter-gaz-beton">Gaz Beton (Ytong)</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-membran" value="Membran" class="filter-checkbox detailed-product-checkbox"><label for="filter-membran">Membran</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-santiye" value="Şantiye Mobilizasyon" class="filter-checkbox detailed-product-checkbox"><label for="filter-santiye">Şantiye Mobilizasyon</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-is-guvenligi" value="İşçi ve İş Güvenliği Ekipmanları" class="filter-checkbox detailed-product-checkbox"><label for="filter-is-guvenligi">İşçi ve İş Güvenliği Ekipmanları</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-kalip-yagi" value="Kalıp Yağı" class="filter-checkbox detailed-product-checkbox"><label for="filter-kalip-yagi">Kalıp Yağı</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-hirdavat" value="Hırdavat Ürünleri Grubu" class="filter-checkbox detailed-product-checkbox"><label for="filter-hirdavat">Hırdavat Ürünleri Grubu</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-halat" value="Halat / İp Grubu" class="filter-checkbox detailed-product-checkbox"><label for="filter-halat">Halat / İp Grubu</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-elektrik" value="Elektrik Malzemeleri Grubu" class="filter-checkbox detailed-product-checkbox"><label for="filter-elektrik">Elektrik Malzemeleri Grubu</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-mekanik" value="İnşaat Mekanik Malzemeleri Grubu" class="filter-checkbox detailed-product-checkbox"><label for="filter-mekanik">İnşaat Mekanik Malzemeleri Grubu</label></div>
+                            <div class="checkbox-wrapper"><input type="checkbox" id="filter-kopuk" value="Köpük Grubu" class="filter-checkbox detailed-product-checkbox"><label for="filter-kopuk">Köpük Grubu</label></div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label for="sortOptions">Sıralama</label>
+                        <select id="sortOptions" class="form-select">
+                            <option value="">Varsayılan</option>
+                            <option value="name-asc">İsim (A-Z)</option>
+                            <option value="name-desc">İsim (Z-A)</option>
+                            <option value="tse">TSE Belgeli</option>
+                            <option value="newest">En Yeni</option>
+                            <option value="popular">En Çok Satılan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filter-group advanced-filters">
+                    <h4>Gelişmiş Filtreler</h4>
+                    <div class="filter-item">
+                        <label>Sertifikasyon</label>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="tseFilter" class="filter-checkbox">
+                            <label for="tseFilter">TSE Belgeli Ürünler</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="ceFilter" class="filter-checkbox">
+                            <label for="ceFilter">CE Belgeli Ürünler</label>
+                        </div>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="isoFilter" class="filter-checkbox">
+                            <label for="isoFilter">ISO Belgeli Ürünler</label>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Stok Durumu</label>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="stockFilter" class="filter-checkbox">
+                            <label for="stockFilter">Stokta Olanlar</label>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <label>Teslimat</label>
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="sameDayFilter" class="filter-checkbox">
+                            <label for="sameDayFilter">Aynı Gün Teslimat</label>
+                        </div>
+                    </div>
+                    <div class="filter-item price-range-filter">
+                        <label>Fiyat Aralığı</label>
+                        <div class="price-range-inputs">
+                            <input type="number" id="minPriceFilter" placeholder="Min ₺" min="0">
+                            <span>-</span>
+                            <input type="number" id="maxPriceFilter" placeholder="Max ₺" min="0">
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button id="applyFilters" class="btn-primary">Filtrele</button>
+                        <button id="resetFilters" class="btn-secondary">Sıfırla</button>
+                        <a href="#/" id="backToHomeBtn" class="btn-secondary">Anasayfaya Dön</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="products-main-content">
+            <div class="products-info">
+                <div class="product-count">
+                    <span id="productCount">0</span> ürün bulundu
+                </div>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <div class="loading-overlay active">
+                    <div class="spinner"></div>
+                </div>
+                <!-- Ürünler dinamik olarak yüklenecek -->
+            </div>
+
+            <div class="pagination" id="pagination">
+                <!-- Sayfalama kontrolleri dinamik olarak yüklenecek -->
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    // Sayfa yüklendiğinde çalışacak
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeProductPage();
+    });
+    
+    let currentPage = 1; // Sayfalama için mevcut sayfa
+    const productsPerPage = 12; // Sayfa başına ürün sayısı (API ile eşleşmeli)
+
+    // Ürün sayfasını başlat
+    async function initializeProductPage() {
+        try {
+            // Kategorileri yükle
+            await loadCategories();
+            
+            // Ürün isimlerini yükle
+            await loadProductNames();
+            
+            // Filtre olaylarını dinle
+            setupFilterListeners();
+            
+            // Mobil filtre toggle
+            setupMobileFilterToggle();
+            
+            // Ürünleri yükle
+            await loadProducts();
+        } catch (error) {
+            console.error('Ürün sayfası başlatılırken hata oluştu:', error);
+            showErrorMessage('Sayfa yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.');
+        }
+    }
+    
+    // Kategorileri yükle
+    async function loadCategories() {
+        const categoryFilter = document.getElementById('categoryFilter');
+        
+        try {
+            const categories = await apiService.getCategories();
+            
+            // Kategori seçeneklerini oluştur
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.name;
+                categoryFilter.appendChild(option);
+            });
+            
+            // URL parametresi varsa, kategori filtresi değerini ayarla
+            const params = new URLSearchParams(window.location.hash.split('?')[1] || '');
+            const categoryId = params.get('category');
+            
+            if (categoryId && categoryFilter) {
+                categoryFilter.value = categoryId;
+            }
+        } catch (error) {
+            console.error('Kategoriler yüklenirken hata oluştu:', error);
+        }
+    }
+    
+    // Ürün isimlerini yükle
+    async function loadProductNames() {
+        const productNameFilter = document.getElementById('productNameFilter');
+        
+        try {
+            const products = await apiService.getProducts();
+            
+            // Ürün isimlerini grupla (aynı isimde birden fazla ürün olabilir)
+            const uniqueProductNames = [];
+            products.forEach(product => {
+                // Ürün adından parantez içindeki bilgileri çıkar (örn: "Çimento (50kg)" -> "Çimento")
+                const baseName = product.name.split('(')[0].trim();
+                
+                if (!uniqueProductNames.includes(baseName)) {
+                    uniqueProductNames.push(baseName);
+                }
+            });
+            
+            // İsimleri alfabetik olarak sırala
+            uniqueProductNames.sort();
+            
+            // Ürün adı seçeneklerini oluştur
+            uniqueProductNames.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                productNameFilter.appendChild(option);
+            });
+            
+            // URL parametresi varsa, ürün adı filtresi değerini ayarla
+            const params = new URLSearchParams(window.location.hash.split('?')[1] || '');
+            const productName = params.get('productName');
+            
+            if (productName && productNameFilter) {
+                productNameFilter.value = productName;
+            }
+        } catch (error) {
+            console.error('Ürün isimleri yüklenirken hata oluştu:', error);
+        }
+    }
+    
+    // Filtre olaylarını ayarla
+    function setupFilterListeners() {
+        // Temel filtreler
+        const categoryFilter = document.getElementById('categoryFilter');
+        const productNameFilter = document.getElementById('productNameFilter');
+        const sortOptions = document.getElementById('sortOptions');
+        
+        // Gelişmiş filtreler için checkboxlar ve inputlar
+        const tseFilter = document.getElementById('tseFilter');
+        const ceFilter = document.getElementById('ceFilter');
+        const isoFilter = document.getElementById('isoFilter');
+        const stockFilter = document.getElementById('stockFilter');
+        const sameDayFilter = document.getElementById('sameDayFilter');
+        const minPriceFilter = document.getElementById('minPriceFilter');
+        const maxPriceFilter = document.getElementById('maxPriceFilter');
+        
+        // Filtre butonları
+        const applyButton = document.getElementById('applyFilters');
+        const resetButton = document.getElementById('resetFilters');
+        
+        // Dinleyiciler
+        if (categoryFilter) categoryFilter.addEventListener('change', loadProducts);
+        if (productNameFilter) productNameFilter.addEventListener('change', loadProducts);
+        if (sortOptions) sortOptions.addEventListener('change', loadProducts);
+        
+        // Yeni eklenen detaylı ürün filtreleri için dinleyiciler
+        const detailedProductCheckboxes = document.querySelectorAll('.detailed-product-checkbox');
+        detailedProductCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', loadProducts);
+        });
+        
+        // Gelişmiş filtreler değiştiğinde manuel Uygula butonu gerektirir
+        if (applyButton) applyButton.addEventListener('click', loadProducts);
+        if (resetButton) resetButton.addEventListener('click', resetFilters);
+        
+        // URL parametresi varsa, sıralama değerini ayarla
+        const urlParams = getUrlParams(); // Helper fonksiyon
+        const sort = urlParams.get('sort');
+        if (sort && sortOptions) {
+            sortOptions.value = sort;
+        }
+        // Sayfalama bilgisini URL'den al (varsa)
+        currentPage = parseInt(urlParams.get('page') || '1');
+        
+        // URL parametresi varsa, gelişmiş filtreleri ayarla (sayfa yüklendiğinde)
+        setAdvancedFiltersFromUrl(urlParams);
+    }
+    
+    // Mobil filtre toggle butonu işlevselliği
+    function setupMobileFilterToggle() {
+        const toggleButton = document.getElementById('toggleFiltersMobile');
+        const filtersSidebar = document.querySelector('.filters-sidebar');
+        const body = document.body;
+
+        if (toggleButton && filtersSidebar) {
+            toggleButton.addEventListener('click', () => {
+                filtersSidebar.classList.toggle('open');
+                body.classList.toggle('filters-open');
+            });
+
+            // Dışarı tıklama ile filtreyi kapatma
+            document.addEventListener('click', (event) => {
+                if (body.classList.contains('filters-open') && 
+                    !filtersSidebar.contains(event.target) && 
+                    !toggleButton.contains(event.target)) {
+                        filtersSidebar.classList.remove('open');
+                        body.classList.remove('filters-open');
+                }
+            });
+        }
+    }
+    
+    // URL'deki parametrelere göre gelişmiş filtreleri ayarla
+    function setAdvancedFiltersFromUrl(params) {
+        // Helper fonksiyon ile parametreleri al
+        const tse = params.get('tse') === 'true';
+        const ce = params.get('ce') === 'true';   // CE eklendi
+        const iso = params.get('iso') === 'true'; // ISO eklendi
+        const stock = params.get('stock') === 'true';
+        const sameDay = params.get('sameDay') === 'true';
+        const minPrice = params.get('minPrice');
+        const maxPrice = params.get('maxPrice');
+        
+        if (document.getElementById('tseFilter')) document.getElementById('tseFilter').checked = tse;
+        if (document.getElementById('ceFilter')) document.getElementById('ceFilter').checked = ce;   // CE eklendi
+        if (document.getElementById('isoFilter')) document.getElementById('isoFilter').checked = iso; // ISO eklendi
+        if (document.getElementById('stockFilter')) document.getElementById('stockFilter').checked = stock;
+        if (document.getElementById('sameDayFilter')) document.getElementById('sameDayFilter').checked = sameDay;
+        if (minPrice && document.getElementById('minPriceFilter')) document.getElementById('minPriceFilter').value = minPrice;
+        if (maxPrice && document.getElementById('maxPriceFilter')) document.getElementById('maxPriceFilter').value = maxPrice;
+    }
+
+    // URL parametrelerini almak için yardımcı fonksiyon
+    function getUrlParams() {
+        return new URLSearchParams(window.location.hash.split('?')[1] || '');
+    }
+    
+    // Filtre değerlerini toplar
+    function getActiveFilters() {
+        const filters = {
+            page: currentPage,
+            limit: productsPerPage
+        };
+        
+        const category = document.getElementById('categoryFilter')?.value;
+        const productName = document.getElementById('productNameFilter')?.value;
+        const sort = document.getElementById('sortOptions')?.value;
+        const tse = document.getElementById('tseFilter')?.checked;
+        const ce = document.getElementById('ceFilter')?.checked;   // CE eklendi
+        const iso = document.getElementById('isoFilter')?.checked; // ISO eklendi
+        const stock = document.getElementById('stockFilter')?.checked;
+        const sameDay = document.getElementById('sameDayFilter')?.checked;
+        const minPrice = document.getElementById('minPriceFilter')?.value;
+        const maxPrice = document.getElementById('maxPriceFilter')?.value;
+
+        if (category) filters.category = category;
+        if (productName) filters.name = productName; // API'nin 'name' beklediğini varsayalım
+        if (sort) filters.sort = sort;
+        if (tse) filters.tse = true;
+        if (ce) filters.ce = true;   // CE eklendi (API'nin 'ce' beklediğini varsayalım)
+        if (iso) filters.iso = true; // ISO eklendi (API'nin 'iso' beklediğini varsayalım)
+        if (stock) filters.inStock = true; // API'nin 'inStock' beklediğini varsayalım
+        if (sameDay) filters.sameDayDelivery = true; // API'nin 'sameDayDelivery' beklediğini varsayalım
+        if (minPrice) filters.minPrice = parseFloat(minPrice);
+        if (maxPrice) filters.maxPrice = parseFloat(maxPrice);
+
+        // Yeni eklenen detaylı ürün filtreleri
+        const selectedProductTypes = Array.from(document.querySelectorAll('.detailed-product-checkbox:checked'))
+                                           .map(cb => cb.value);
+        if (selectedProductTypes.length > 0) {
+            filters.product_types = selectedProductTypes.join(','); // Virgülle ayrılmış metin
+        }
+
+        return filters;
+    }
+
+    // Ürünleri yükler ve gösterir
+    async function loadProducts(resetPage = true) {
+        if (resetPage) {
+            currentPage = 1; // Yeni filtreleme, ilk sayfaya dön
+        }
+        
+        const grid = document.getElementById('productsGrid');
+        const loadingOverlay = grid?.querySelector('.loading-overlay');
+        const productCountSpan = document.getElementById('productCount');
+        const paginationContainer = document.getElementById('pagination');
+        
+        if (!grid || !loadingOverlay || !productCountSpan || !paginationContainer) return;
+
+        loadingOverlay.classList.add('active');
+        grid.innerHTML = ''; // Önceki ürünleri temizle (yükleme göstergesi hariç)
+        grid.appendChild(loadingOverlay); // Yükleme göstergesini tekrar ekle
+        
+        const filters = getActiveFilters();
+        
+        try {
+            console.log("API'ye gönderilen filtreler:", filters);
+            const response = await apiService.getProducts(filters);
+            
+            const products = response.products || [];
+            const totalCount = response.totalCount || 0;
+
+            if (products.length > 0) {
+                products.forEach(product => {
+                    grid.insertAdjacentHTML('beforeend', createProductCard(product));
+                });
+            } else {
+                grid.innerHTML = showNoResultsMessage(); // Yükleme göstergesini de kaldırır
+            }
+
+            productCountSpan.textContent = totalCount;
+            renderPagination(totalCount, paginationContainer);
+
+            // Filtreler değiştiğinde URL'i güncelle (tarayıcı geçmişini bozmadan)
+            updateUrlWithFilters(filters);
+
+        } catch (error) {
+            console.error('Ürünler yüklenirken hata:', error);
+            grid.innerHTML = showErrorMessage('Ürünler yüklenirken bir hata oluştu.'); // Yükleme göstergesini de kaldırır
+            productCountSpan.textContent = '0';
+            paginationContainer.innerHTML = '';
+        } finally {
+            loadingOverlay.classList.remove('active');
+            // Mobil filtre açıksa kapat
+            const filtersSidebar = document.querySelector('.filters-sidebar');
+            if (filtersSidebar && filtersSidebar.classList.contains('open')) {
+                 filtersSidebar.classList.remove('open');
+                 document.body.classList.remove('filters-open');
+            }
+        }
+    }
+
+    // Filtreleri sıfırlar ve ürünleri yeniden yükler
+    function resetFilters() {
+        document.getElementById('categoryFilter').value = '';
+        document.getElementById('productNameFilter').value = '';
+        document.getElementById('sortOptions').value = '';
+        document.getElementById('tseFilter').checked = false;
+        document.getElementById('ceFilter').checked = false;   // CE eklendi
+        document.getElementById('isoFilter').checked = false; // ISO eklendi
+        document.getElementById('stockFilter').checked = false;
+        document.getElementById('sameDayFilter').checked = false;
+        document.getElementById('minPriceFilter').value = '';
+        document.getElementById('maxPriceFilter').value = '';
+
+        // Yeni eklenen detaylı ürün filtrelerini sıfırla
+        document.querySelectorAll('.detailed-product-checkbox').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
+        // Sıfırladıktan sonra ilk sayfadan ürünleri yükle
+        loadProducts(true);
+    }
+    
+    // URL'i filtrelerle günceller
+    function updateUrlWithFilters(filters) {
+        const currentHash = window.location.hash.split('?')[0];
+        const params = new URLSearchParams();
+
+        for (const key in filters) {
+            // Limit parametresini URL'e ekleme
+            if (key !== 'limit' && filters[key] !== null && filters[key] !== '' && filters[key] !== false) {
+                 // Sayfa 1 ise URL'e ekleme (varsayılan)
+                 if (key === 'page' && filters[key] === 1) continue;
+                params.set(key, filters[key]);
+            }
+        }
+
+        const queryString = params.toString();
+        const newUrl = queryString ? `${currentHash}?${queryString}` : currentHash;
+        
+        // Tarayıcı geçmişine yeni giriş eklemeden URL'i güncelle
+        // history.replaceState(null, '', newUrl);
+         // VEYA yeni giriş ekleyerek (kullanıcı geri gidebilir)
+         if (window.location.hash !== newUrl) { // Sadece URL değiştiyse state ekle
+             history.pushState(null, '', newUrl);
+         }
+    }
+
+    // Sayfalamayı oluşturur
+    function renderPagination(totalItems, container) {
+        container.innerHTML = '';
+        const totalPages = Math.ceil(totalItems / productsPerPage);
+
+        if (totalPages <= 1) return; // Tek sayfa varsa sayfalamayı gösterme
+
+        const maxVisibleButtons = 5; // Gösterilecek maksimum sayfa butonu sayısı
+
+        // Başlangıç ve bitiş sayfa numaralarını hesapla
+        let startPage = Math.max(1, currentPage - Math.floor(maxVisibleButtons / 2));
+        let endPage = Math.min(totalPages, startPage + maxVisibleButtons - 1);
+
+        // Gerekirse başlangıç sayfasını ayarla (sona yaklaşıldığında)
+        if (endPage - startPage + 1 < maxVisibleButtons && startPage > 1) {
+            startPage = Math.max(1, endPage - maxVisibleButtons + 1);
+        }
+
+        // Geri butonu
+        const prevButton = createPaginationButton('Önceki', currentPage > 1 ? currentPage - 1 : null);
+        container.appendChild(prevButton);
+
+        // İlk sayfa butonu (gerekirse)
+        if (startPage > 1) {
+            container.appendChild(createPaginationButton(1, 1));
+            if (startPage > 2) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.className = 'pagination-ellipsis';
+                container.appendChild(ellipsis);
+            }
+        }
+
+        // Sayfa numarası butonları
+        for (let i = startPage; i <= endPage; i++) {
+            const pageButton = createPaginationButton(i, i);
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+                pageButton.disabled = true;
+            }
+            container.appendChild(pageButton);
+        }
+
+        // Son sayfa butonu (gerekirse)
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.className = 'pagination-ellipsis';
+                container.appendChild(ellipsis);
+            }
+            container.appendChild(createPaginationButton(totalPages, totalPages));
+        }
+
+        // İleri butonu
+        const nextButton = createPaginationButton('Sonraki', currentPage < totalPages ? currentPage + 1 : null);
+        container.appendChild(nextButton);
+    }
+
+    // Tek bir sayfalama butonu oluşturur
+    function createPaginationButton(text, pageNumber) {
+        const button = document.createElement('button');
+        button.textContent = text;
+        button.className = 'pagination-button';
+        if (!pageNumber) {
+            button.disabled = true;
+        } else {
+            button.addEventListener('click', () => {
+                currentPage = pageNumber;
+                loadProducts(false); // Sayfa değiştiğinde filtreleri sıfırlama
+            });
+        }
+        return button;
+    }
+
+    // Ürün kartını oluştur (Modern Tasarım)
+    function createProductCard(product) {
+        const inStock = product.stock > 0;
+        const stockBadgeClass = inStock ? 'in-stock' : 'out-of-stock';
+        const stockBadgeText = inStock ? 'Stokta Var' : 'Tükendi';
+        const isSameDayDelivery = product.deliveryTime && product.deliveryTime.includes('Aynı gün');
+        const deliveryText = product.deliveryTime || 'Standart Teslimat';
+        
+        return `
+            <div class="product-card" data-id="${product.id}">
+                <a href="#/product/${product.id}" class="product-link">
+                    <div class="product-image-wrapper">
+                        <img src="${product.image === 'placeholder.jpg' ? 'img/placeholder.jpg' : product.image}"
+                            alt="${product.name}"
+                            loading="lazy"
+                            onerror="this.src='img/placeholder.jpg'" class="product-image">
+                        <div class="product-badges">
+                            ${product.hasTSE ? '<span class="badge tse-badge">TSE</span>' : ''}
+                            ${product.hasCE ? '<span class="badge ce-badge">CE</span>' : ''}    <!-- CE rozeti eklendi -->
+                            ${product.hasISO ? '<span class="badge iso-badge">ISO</span>' : ''}   <!-- ISO rozeti eklendi -->
+                            ${isSameDayDelivery ? '<span class="badge delivery-badge">Aynı Gün</span>' : ''}
+                            <span class="badge stock-badge ${stockBadgeClass}">${stockBadgeText}</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-meta">
+                            <span class="product-price">${product.price.toLocaleString('tr-TR')} ₺</span>
+                            <span class="product-rating">
+                                <i class="fas fa-star"></i> ${product.rating || 'N/A'}
+                            </span>
+                        </div>
+                        <div class="product-delivery">
+                           <i class="fas fa-truck"></i> ${deliveryText}
+                        </div>
+                    </div>
+                </a>
+                <div class="product-actions">
+                    <button class="btn-add-cart" ${!inStock ? 'disabled' : ''} data-product-id="${product.id}">
+                        <i class="fas fa-shopping-cart"></i> Sepete Ekle
+                    </button>
+                    <button class="btn-quick-view" data-product-id="${product.id}">
+                        <i class="fas fa-eye"></i> Hızlı Bakış
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Ürün bulunamadı mesajını gösterir
+    function showNoResultsMessage() {
+        return `
+            <div class="no-products">
+                <i class="fas fa-search"></i>
+                <h3>Ürün Bulunamadı</h3>
+                <p>Seçtiğiniz kriterlere uygun ürün bulunamadı. Farklı filtreler deneyebilirsiniz.</p>
+                <button id="clearFiltersForResult" class="btn-secondary">Filtreleri Temizle</button>
+            </div>
+        `;
+        // Buton için olay dinleyici eklenebilir (global bir dinleyici veya burada)
+        // document.getElementById('clearFiltersForResult')?.addEventListener('click', resetFilters);
+    }
+    
+    // Hata mesajını gösterir
+    function showErrorMessage(message) {
+        return `
+            <div class="error-message">
+                 <i class="fas fa-exclamation-triangle"></i>
+                 <h3>Bir Hata Oluştu</h3>
+                 <p>${message}</p>
+                 <button onclick="loadProducts(true)" class="btn-primary"><i class="fas fa-sync-alt"></i> Tekrar Dene</button>
+            </div>
+        `;
+    }
+</script>

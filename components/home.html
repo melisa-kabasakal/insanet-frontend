@@ -1,0 +1,37 @@
+<!-- Ana Sayfa Bileşeni -->
+<section class="hero" aria-label="Reklam Alanı">
+    <div class="ad-space">
+        <h2>Reklam Alanı</h2>
+    </div>
+</section>
+
+<section class="categories">
+    <h2>Kategoriler</h2>
+    <div class="categoryList">
+        <!-- Kategoriler dinamik olarak yüklenecek -->
+        <div class="loading-indicator">Kategoriler yükleniyor...</div>
+    </div>
+</section>
+
+<section class="auctions">
+    <h2>Aktif İhaleler</h2>
+    <div class="auctionList">
+        <!-- İhaleler dinamik olarak yüklenecek -->
+        <div class="loading-indicator">İhaleler yükleniyor...</div>
+    </div>
+</section>
+
+<section class="hero" aria-label="Alt Reklam Alanı">
+    <div class="ad-space">
+        <h2>Reklam Alanı</h2>
+    </div>
+</section>
+
+<script>
+    // Ana sayfa içeriğini yükle
+    if (window.loadHomePage) {
+        window.loadHomePage();
+    } else {
+        console.error('loadHomePage fonksiyonu bulunamadı');
+    }
+</script>

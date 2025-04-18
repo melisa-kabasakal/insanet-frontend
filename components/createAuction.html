@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İhale Oluştur - İnşanet</title>
+</head>
+<body>
+    <div class="create-auction-container">
+        <div class="create-auction-header">
+            <h3>Yeni İhale Oluştur</h3>
+            <button type="button" class="create-auction-close">&times;</button>
+        </div>
+        
+        <!-- Form Sekmeleri -->
+        <div class="create-auction-tabs">
+            <div class="create-auction-tab active" data-tab="material-request">1. Malzeme Talep Formu</div>
+            <div class="create-auction-tab" data-tab="auction-settings">2. İhale Ayarları</div>
+            <div class="create-auction-tab" data-tab="bid-settings">3. Teklif Ayarları</div>
+        </div>
+        
+        <!-- Sekmeler İçeriği -->
+        <div class="create-auction-tab-contents">
+            <!-- 1. Malzeme Talep Formu -->
+            <div class="create-auction-tab-content active" id="material-request">
+                <div class="excel-actions">
+                    <button type="button" class="excel-btn excel-import-btn" id="importExcel" onclick="if(typeof handleExcelImport === 'function') handleExcelImport(); else console.error('handleExcelImport fonksiyonu bulunamadı!');">
+                        <i class="fa-solid fa-file-import"></i> Excel'den İçe Aktar
+                        <span class="excel-help-tip" data-tip="Uyumlu bir Excel dosyası seçerek tabloyu otomatik doldurabilirsiniz. Excel dosyanızda 'Talep No', 'Tarih', 'Sevk Yeri', 'Ürün Adı', 'Miktar', 'Birim', 'Ürün Özellikleri', 'Kullanım Yeri' ve 'Ödeme Tipi' sütunları olmalıdır.">?</span>
+                    </button>
+                    <button type="button" class="excel-btn excel-export-btn" id="exportExcel" onclick="if(typeof handleExcelExport === 'function') handleExcelExport(); else console.error('handleExcelExport fonksiyonu bulunamadı!');">
+                        <i class="fa-solid fa-file-export"></i> Excel'e Aktar
+                        <span class="excel-help-tip" data-tip="Mevcut tabloyu Excel dosyası olarak indirebilirsiniz. Dışa aktarılan Excel dosyası tarih ve saat bilgisi içeren bir isimle kaydedilecektir.">?</span>
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="material-request-table" id="materialRequestTable">
+                        <thead>
+                            <tr>
+                                <th width="60">Sıra No</th>
+                                <th width="100">Talep No</th>
+                                <th width="110">Tarih</th>
+                                <th width="130">Sevk Yeri</th>
+                                <th>Ürün Adı</th>
+                                <th width="80">Miktar</th>
+                                <th width="80">Birim</th>
+                                <th>Ürün Özellikleri</th>
+                                <th>Kullanım Yeri</th>
+                                <th width="120">Ödeme Tipi</th>
+                                <th width="120">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    <input type="text" name="request_no" placeholder="Otomatik oluşturulacak" readonly>
+                                </td>
+                                <td>
+                                    <input type="date" name="date" value="">
+                                </td>
+                                <td>
+                                    <select name="location">
+                                        <option value="">Seçiniz</option>
+                                        <option value="Adana">Adana</option>
+                                        <option value="Adıyaman">Adıyaman</option>
+                                        <option value="Afyonkarahisar">Afyonkarahisar</option>
+                                        <option value="Ağrı">Ağrı</option>
+                                        <option value="Amasya">Amasya</option>
+                                        <option value="Ankara">Ankara</option>
+                                        <option value="Antalya">Antalya</option>
+                                        <option value="Artvin">Artvin</option>
+                                        <option value="Aydın">Aydın</option>
+                                        <option value="Balıkesir">Balıkesir</option>
+                                        <option value="Bilecik">Bilecik</option>
+                                        <option value="Bingöl">Bingöl</option>
+                                        <option value="Bitlis">Bitlis</option>
+                                        <option value="Bolu">Bolu</option>
+                                        <option value="Burdur">Burdur</option>
+                                        <option value="Bursa">Bursa</option>
+                                        <option value="Çanakkale">Çanakkale</option>
+                                        <option value="Çankırı">Çankırı</option>
+                                        <option value="Çorum">Çorum</option>
+                                        <option value="Denizli">Denizli</option>
+                                        <option value="Diyarbakır">Diyarbakır</option>
+                                        <option value="Edirne">Edirne</option>
+                                        <option value="Elazığ">Elazığ</option>
+                                        <option value="Erzincan">Erzincan</option>
+                                        <option value="Erzurum">Erzurum</option>
+                                        <option value="Eskişehir">Eskişehir</option>
+                                        <option value="Gaziantep">Gaziantep</option>
+                                        <option value="Giresun">Giresun</option>
+                                        <option value="Gümüşhane">Gümüşhane</option>
+                                        <option value="Hakkari">Hakkari</option>
+                                        <option value="Hatay">Hatay</option>
+                                        <option value="Isparta">Isparta</option>
+                                        <option value="Mersin">Mersin</option>
+                                        <option value="İstanbul">İstanbul</option>
+                                        <option value="İzmir">İzmir</option>
+                                        <option value="Kars">Kars</option>
+                                        <option value="Kastamonu">Kastamonu</option>
+                                        <option value="Kayseri">Kayseri</option>
+                                        <option value="Kırklareli">Kırklareli</option>
+                                        <option value="Kırşehir">Kırşehir</option>
+                                        <option value="Kocaeli">Kocaeli</option>
+                                        <option value="Konya">Konya</option>
+                                        <option value="Kütahya">Kütahya</option>
+                                        <option value="Malatya">Malatya</option>
+                                        <option value="Manisa">Manisa</option>
+                                        <option value="Kahramanmaraş">Kahramanmaraş</option>
+                                        <option value="Mardin">Mardin</option>
+                                        <option value="Muğla">Muğla</option>
+                                        <option value="Muş">Muş</option>
+                                        <option value="Nevşehir">Nevşehir</option>
+                                        <option value="Niğde">Niğde</option>
+                                        <option value="Ordu">Ordu</option>
+                                        <option value="Rize">Rize</option>
+                                        <option value="Sakarya">Sakarya</option>
+                                        <option value="Samsun">Samsun</option>
+                                        <option value="Siirt">Siirt</option>
+                                        <option value="Sinop">Sinop</option>
+                                        <option value="Sivas">Sivas</option>
+                                        <option value="Tekirdağ">Tekirdağ</option>
+                                        <option value="Tokat">Tokat</option>
+                                        <option value="Trabzon">Trabzon</option>
+                                        <option value="Tunceli">Tunceli</option>
+                                        <option value="Şanlıurfa">Şanlıurfa</option>
+                                        <option value="Uşak">Uşak</option>
+                                        <option value="Van">Van</option>
+                                        <option value="Yozgat">Yozgat</option>
+                                        <option value="Zonguldak">Zonguldak</option>
+                                        <option value="Aksaray">Aksaray</option>
+                                        <option value="Bayburt">Bayburt</option>
+                                        <option value="Karaman">Karaman</option>
+                                        <option value="Kırıkkale">Kırıkkale</option>
+                                        <option value="Batman">Batman</option>
+                                        <option value="Şırnak">Şırnak</option>
+                                        <option value="Bartın">Bartın</option>
+                                        <option value="Ardahan">Ardahan</option>
+                                        <option value="Iğdır">Iğdır</option>
+                                        <option value="Yalova">Yalova</option>
+                                        <option value="Karabük">Karabük</option>
+                                        <option value="Kilis">Kilis</option>
+                                        <option value="Osmaniye">Osmaniye</option>
+                                        <option value="Düzce">Düzce</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" name="product_name" placeholder="Ürün Adı">
+                                </td>
+                                <td>
+                                    <input type="number" name="quantity" placeholder="Miktar">
+                                </td>
+                                <td>
+                                    <select name="unit">
+                                        <option value="">Birim</option>
+                                        <option value="ADET">ADET</option>
+                                        <option value="KG">KG</option>
+                                        <option value="TON">TON</option>
+                                        <option value="M">M</option>
+                                        <option value="M²">M²</option>
+                                        <option value="M³">M³</option>
+                                        <option value="LT">LT</option>
+                                        <option value="TORBA">TORBA</option>
+                                        <option value="PAKET">PAKET</option>
+                                        <option value="ÇUVAL">ÇUVAL</option>
+                                        <option value="TOP">TOP</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <textarea name="product_specs" placeholder="Ürün özellikleri" class="auto-expandable"></textarea>
+                                </td>
+                                <td>
+                                    <textarea name="usage_area" placeholder="Kullanım Yeri" class="auto-expandable"></textarea>
+                                </td>
+                                <td>
+                                    <select name="payment_type">
+                                        <option value="">Seçiniz</option>
+                                        <option value="Nakit/Havale">Nakit/Havale</option>
+                                        <option value="Kredi Kartı">Kredi Kartı</option>
+                                        <option value="30 Günlük Çek">30 Günlük Çek</option>
+                                        <option value="60 Günlük Çek">60 Günlük Çek</option>
+                                        <option value="75 Günlük Çek">75 Günlük Çek</option>
+                                        <option value="90 Günlük Çek">90 Günlük Çek</option>
+                                        <option value="105 Günlük Çek">105 Günlük Çek</option>
+                                        <option value="120 Günlük Çek">120 Günlük Çek</option>
+                                        <option value="150 Günlük Çek">150 Günlük Çek</option>
+                                        <option value="180 Günlük Çek">180 Günlük Çek</option>
+                                    </select>
+                                </td>
+                                <td class="table-actions">
+                                    <div class="primary-actions">
+                                        <button type="button" class="table-action-btn drag-handle" title="Sürükle & Sırala">
+                                            <i class="fa-solid fa-grip-vertical"></i>
+                                        </button>
+                                        <button type="button" class="table-action-btn details" title="Detayları Göster">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                        <button type="button" class="table-action-btn edit" title="Düzenle">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                    </div>
+                                    <div class="secondary-actions">
+                                        <button type="button" class="table-action-btn duplicate" title="Çoğalt">
+                                            <i class="fa-solid fa-copy"></i>
+                                        </button>
+                                        <button type="button" class="table-action-btn delete" title="Sil">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <button type="button" class="add-row-btn" id="addMaterialRow">
+                    <i class="fa-solid fa-plus"></i> Yeni Satır Ekle
+                </button>
+                
+                <!-- Malzeme Detay Modalı -->
+                <div class="material-details-modal" id="materialDetailsModal">
+                    <div class="material-details-content">
+                        <button type="button" class="material-details-close">&times;</button>
+                        <div class="material-details-header">
+                            <h3>Malzeme Detayları</h3>
+                        </div>
+                        <div class="material-details-body">
+                            <div class="material-details-item">
+                                <label>Talep No:</label>
+                                <p id="detail-request-no"></p>
+                            </div>
+                            <div class="material-details-item">
+                                <label>Tarih:</label>
+                                <p id="detail-date"></p>
+                            </div>
+                            <div class="material-details-item">
+                                <label>Sevk Yeri:</label>
+                                <p id="detail-location"></p>
+                            </div>
+                            <div class="material-details-item">
+                                <label>Ürün Adı:</label>
+                                <p id="detail-product-name"></p>
+                            </div>
+                            <div class="material-details-item">
+                                <label>Miktar:</label>
+                                <p id="detail-quantity"></p>
+                            </div>
+                            <div class="material-details-item">
+                                <label>Birim:</label>
+                                <p id="detail-unit"></p>
+                            </div>
+                            <div class="material-details-item full-width">
+                                <label>Ürün Özellikleri:</label>
+                                <p id="detail-product-specs"></p>
+                            </div>
+                            <div class="material-details-item full-width">
+                                <label>Kullanım Yeri:</label>
+                                <p id="detail-usage-area"></p>
+                            </div>
+                            <div class="material-details-item">
+                                <label>Ödeme Tipi:</label>
+                                <p id="detail-payment-type"></p>
+                            </div>
+                            <div class="material-details-item">
+                                <label>Sıra No:</label>
+                                <p id="detail-row-number"></p>
+                            </div>
+                        </div>
+                        <div class="material-details-footer">
+                            <button type="button" id="closeDetailModal">Kapat</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="nav-btn next-tab" data-next="auction-settings">
+                        <span>Sonraki: İhale Ayarları</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 2. İhale Ayarları -->
+            <div class="create-auction-tab-content" id="auction-settings">
+                <div class="form-section">
+                    <h4>İhale Temel Bilgileri</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="auction_title">İhale Başlığı *</label>
+                            <input type="text" id="auction_title" class="form-control" placeholder="İhale başlığını giriniz">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="auction_description">İhale Açıklaması *</label>
+                            <textarea id="auction_description" class="form-control textarea" placeholder="İhale detaylarını giriniz"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h4>İhale Kategorisi *</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <select id="auction_category" class="form-control">
+                                <option value="">Kategori Seçiniz</option>
+                                <option value="construction_materials">İnşaat Malzemeleri</option>
+                                <option value="electrical_materials">Elektrik Malzemeleri</option>
+                                <option value="mechanical_materials">Mekanik Malzemeleri</option>
+                                <option value="insulation_materials">Mantolama Malzemeleri</option>
+                                <option value="hardware_materials">Hırdavat & Nalbur & Şantiye Mobilizasyon Malzemeleri</option>
+                                <option value="other">Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h4>İhale Özellikleri</h4>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="urgent_auction" name="auction_features[]" value="urgent">
+                            <label for="urgent_auction">Acil İhale</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="shipping_included" name="auction_features[]" value="shipping_included">
+                            <label for="shipping_included">Nakliye Dahil</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="shipping_excluded" name="auction_features[]" value="shipping_excluded">
+                            <label for="shipping_excluded">Nakliye Hariç</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="quality_cert_required" name="auction_features[]" value="quality_cert_required">
+                            <label for="quality_cert_required">Kalite Belge Sertifikası Zorunlu</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="nav-btn prev-tab" data-prev="material-request">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Önceki: Malzeme Talep Formu</span>
+                    </button>
+                    <button type="button" class="nav-btn next-tab" data-next="bid-settings">
+                        <span>Sonraki: Teklif Ayarları</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 3. Teklif Ayarları -->
+            <div class="create-auction-tab-content" id="bid-settings">
+                <div class="form-section">
+                    <h4>Teklif Verme Koşulları</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Teklif Detayları</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="partial_bids" name="bid_conditions[]" value="partial_bids">
+                                    <label for="partial_bids">Kısmi Tekliflere İzin Ver</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="alternative_bids" name="bid_conditions[]" value="alternative_bids">
+                                    <label for="alternative_bids">Alternatif Tekliflere İzin Ver</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>İş Ortaklığı</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="consortium_bids" name="bid_conditions[]" value="consortium_bids">
+                                    <label for="consortium_bids">Konsorsiyum Tekliflerine İzin Ver</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="subcontractor" name="bid_conditions[]" value="subcontractor">
+                                    <label for="subcontractor">Alt Yüklenici Kullanımına İzin Ver</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h4>Kalite ve Belge Gereksinimleri</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>ISO Belgesi</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="iso_9001" name="iso_certificates[]" value="iso_9001">
+                                    <label for="iso_9001">ISO 9001</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="iso_14001" name="iso_certificates[]" value="iso_14001">
+                                    <label for="iso_14001">ISO 14001</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="iso_45001" name="iso_certificates[]" value="iso_45001">
+                                    <label for="iso_45001">ISO 45001</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>TSE Belgesi</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tsek" name="tse_certificates[]" value="tsek">
+                                    <label for="tsek">TSEK</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="ts_en" name="tse_certificates[]" value="ts_en">
+                                    <label for="ts_en">TS EN</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="ts_iso" name="tse_certificates[]" value="ts_iso">
+                                    <label for="ts_iso">TS ISO</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>CE Belgesi</label>
+                            <select id="ce_certificate" class="form-control">
+                                <option value="">Seçiniz</option>
+                                <option value="required">Zorunlu</option>
+                                <option value="optional">İsteğe Bağlı</option>
+                                <option value="not_required">Gerekli Değil</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h4>Diğer Gereksinimler</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="technical_specs">Teknik Şartname</label>
+                            <textarea id="technical_specs" class="form-control textarea" placeholder="Teknik şartname detaylarını giriniz"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="quality_standards">Kalite Standartları</label>
+                            <textarea id="quality_standards" class="form-control textarea" placeholder="Kalite standartları detaylarını giriniz"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-navigation">
+                    <button type="button" class="nav-btn prev-tab" data-prev="auction-settings">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Önceki: İhale Ayarları</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Form Alt Butonları -->
+        <div class="auction-form-actions">
+            <button type="button" class="btn-back" id="backToAuctions">Geri Dön</button>
+            <div class="auction-action-btns">
+                <button type="button" class="btn-show-drafts" id="showDrafts">Taslakları Göster</button>
+                <button type="button" class="btn-save-draft" id="saveDraft">Taslak Olarak Kaydet</button>
+                <button type="button" class="btn-publish" id="publishAuction">İhale Yayınla</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Taslak İhaleler Modalı -->
+    <div class="draft-auctions-modal" id="draftAuctionsModal">
+        <div class="draft-auctions-content">
+            <button type="button" class="draft-auctions-close">&times;</button>
+            <div class="draft-auctions-header">
+                <h3>Taslak İhaleler</h3>
+            </div>
+            <div class="draft-auctions-body">
+                <div class="draft-auctions-search">
+                    <input type="text" id="draftSearchInput" placeholder="Taslak ara...">
+                    <i class="fa-solid fa-search"></i>
+                </div>
+                <div class="draft-auctions-list" id="draftAuctionsList">
+                    <!-- Taslak ihaleler buraya dinamik olarak eklenecek -->
+                    <div class="no-drafts-message">
+                        <i class="fa-solid fa-file-circle-exclamation"></i>
+                        <p>Henüz kaydedilmiş taslak ihale bulunmamaktadır.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="draft-auctions-footer">
+                <button type="button" id="closeDraftsModal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

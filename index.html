@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="İnşanet: Türkiye'nin ilk dijital inşaat malzemeleri ihale platformu">
+    <title>İnşanet: Dijital İnşaat Malzemeleri İhale Platformu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,600&family=Roboto&display=swap" rel="stylesheet">
+    <link rel="icon" href="./img/inşanet mavi.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auctions.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <!-- Logo sol üstte -->
+            <div class="logo-container">
+                <a href="#/" class="logo">
+                    <img src="./img/inşanet mavi.png" alt="İnşanet Ana Sayfa" width="125" height="75">
+                </a>
+            </div>
+            
+            <!-- Arama bölümü ortada -->
+            <div class="search-container">
+                <div class="search">
+                    <input type="text" placeholder="Kategori, Ürün veya Tedarikçi ara..." class="searchInput" id="searchInput">
+                    <div class="search-options">
+                        <select id="searchType">
+                            <option value="all">Tümü</option>
+                            <option value="products">Ürünler</option>
+                            <option value="suppliers">Tedarikçiler</option>
+                            <option value="categories">Kategoriler</option>
+                        </select>
+                    </div>
+                    <button type="button" class="searchButton" id="searchButton">
+                        <img src="./img/search.png" width="30" height="25" alt="Arama ikonu" class="searchIcon">
+                    </button>
+                </div>
+                <div class="search-results" id="searchResults">
+                    <!-- Arama sonuçları burada gösterilecek -->
+                    <div class="search-filters">
+                        <div class="filter-tags" id="filterTags"></div>
+                    </div>
+                    <div class="search-results-list" id="searchResultsList"></div>
+                </div>
+            </div>
+            
+            <!-- Giriş/Kayıt butonları sağ üstte -->
+            <div class="user-signBox">
+                <!-- Sepet linki KALDIRILDI -->
+                <!-- <a href="./components/cart.html" class="cart-link">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span class="cart-counter">0</span>
+                </a> -->
+                <a href="#/login" class="btn-login">Giriş Yap</a>
+                <button type="button" class="btn-register" id="showRegisterModal">Kayıt Ol</button>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="navBottom">
+            <div class="container">
+                <nav class="mainNav">
+                    <a href="#/products" class="menuItem">Ürünler</a>
+                    <a href="#/suppliers" class="menuItem">Onaylı Tedarikçiler</a>
+                    <a href="#/contractors" class="menuItem">Onaylı Müteahhitler</a>
+                    <a href="#/logistics" class="menuItem">Onaylı Lojistik Firmaları</a>
+                    <a href="#/auctions" class="menuItem">İhaleler</a>
+                    <a href="#/experiences" class="menuItem">Platform Deneyimleri</a>
+                    <a href="#/media" class="menuItem">Medyada İnşanet</a>
+                </nav>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Sayfa içeriği dinamik olarak yüklenecek -->
+    </main>
+
+    <footer>
+        <div class="footerContent">
+            <div class="containers">
+                <div class="row">
+                    <div class="footer-col">
+                        <h4>Kurumsal</h4>
+                        <ul>
+                            <li><a href="#/about">Hakkımızda</a></li>
+                            <li><a href="#/contact">Bize Ulaşın</a></li>
+                            <li><a href="#/faq">Sıkça Sorulan Sorular (S.S.S) </a></li>
+                            <li><a href="#/privacy">Gizlilik Politikalarımız</a></li>
+                            <li><a href="#/partnership">Ortaklık Programı</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Medyada İnşanet</h4>
+                        <ul>
+                            <li><a href="#/products">Ürünler</a></li>
+                            <li><a href="#/suppliers">Onaylı Satıcılar</a></li>
+                            <li><a href="#/contractors">Onaylı Müteahhitler</a></li>
+                            <li><a href="#/blog">İnşanet Blog</a></li>
+                            <li><a href="#/faq">Sıkça Sorulan Sorular</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Bizi Takip Edin</h4>
+                        <div class="social-links">
+                            <a href="https://linkedin.com/company/insanet" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="https://instagram.com/insanet" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://twitter.com/insanet" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://facebook.com/insanet" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-square-facebook"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h4>İletişim</h4>
+                        <ul>
+                            <li><a href="mailto:info@insanet.com" aria-label="E-posta"><i class="fa-regular fa-envelope"></i> info@insanet.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 İnşanet Yapı Teknoloji San. ve Tic. Ltd. Şti. Tüm hakları saklıdır.</p>
+                    <nav class="footer-links">
+                        <a href="#/terms">Kullanım Koşulları</a>
+                        <a href="#/privacy-notice">Aydınlatma Metni</a>
+                        <a href="#/cookie-policy">Çerez Koşulları</a>
+                        <a href="#/kvkk">Kişisel Verilerin Korunması Kanunu</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Yükleme göstergesi -->
+    <div class="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Kayıt Tipi Seçim Modalı (Geri Eklendi) -->
+    <div class="register-type-modal" id="registerTypeModal">
+        <div class="register-type-modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Kayıt Olmak İstediğiniz Kullanıcı Tipini Seçin</h3>
+            <div class="register-type-options">
+                <a href="#/register?type=supplier" class="register-type-option">
+                    <i class="fa-solid fa-industry"></i>
+                    <h4>Tedarikçi</h4>
+                    <p>Ürünlerinizi satmak için tedarikçi olarak kayıt olun</p>
+                </a>
+                <a href="#/register?type=contractor" class="register-type-option">
+                    <i class="fa-solid fa-hammer"></i>
+                    <h4>Müteahhit</h4>
+                    <p>İnşaat ve tadilat işleri için müteahhit olarak kayıt olun</p>
+                </a>
+                <a href="#/register?type=logistics" class="register-type-option">
+                    <i class="fa-solid fa-truck"></i>
+                    <h4>Lojistik Firması</h4>
+                    <p>Taşımacılık hizmetleri için lojistik firması olarak kayıt olun</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript dosyaları -->
+    <script src="js/apiService.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/forgot-password.js"></script>
+    <script src="js/auctions.js"></script>
+</body>
+</html>

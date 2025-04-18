@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f6fa;
+        }
+
+        .register-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        /* Form styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        input[type="tel"],
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdde1;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: aquamarine;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(127, 255, 212, 0.2);
+        }
+
+        small {
+            display: block;
+            color: #7f8c8d;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Button styles */
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* User type selector styles */
+        .user-type-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-type-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #dcdde1;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-type-btn i {
+            font-size: 24px;
+            color: #2c3e50;
+        }
+
+        .user-type-btn.active {
+            border-color: aquamarine;
+            background-color: rgba(127, 255, 212, 0.1);
+        }
+
+        /* Auth tabs styles */
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: #f1f2f6;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .auth-tab.active {
+            background: aquamarine;
+            color: #000;
+        }
+
+        /* Auth message styles */
+        .auth-message {
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .auth-message.error {
+            background-color: #ff7675;
+            color: white;
+        }
+
+        .auth-message.success {
+            background-color: #55efc4;
+            color: #2d3436;
+        }
+
+        .auth-message.info {
+            background-color: #74b9ff;
+            color: white;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 20px;
+            }
+
+            .user-type-buttons {
+                flex-direction: column;
+            }
+
+            .user-type-btn {
+                width: 100%;
+            }
+        }
+
+        /* Auth tab content visibility */
+        .auth-tab-content {
+            display: none;
+        }
+
+        .auth-tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Kayıt Ol</h2>
+        
+        <form id="registerForm" method="POST" onsubmit="return false;">
+            <!-- Kullanıcı tipi seçimi -->
+            <div class="user-type-selector">
+                <div class="form-group">
+                    <label>Kullanıcı Tipi</label>
+                    <div class="user-type-buttons">
+                        <button type="button" class="user-type-btn" data-type="MUTEAHHIT" onclick="selectUserType('MUTEAHHIT')">
+                            <i class="fas fa-hard-hat"></i> Müteahhit
+                        </button>
+                        <button type="button" class="user-type-btn" data-type="TEDARIKCI" onclick="selectUserType('TEDARIKCI')">
+                            <i class="fas fa-store"></i> Tedarikçi
+                        </button>
+                        <button type="button" class="user-type-btn" data-type="LOJISTIKCI" onclick="selectUserType('LOJISTIKCI')">
+                            <i class="fas fa-truck-loading"></i> Lojistik
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doğrulama Yöntemi Seçimi -->
+            <div class="auth-method-selector">
+                <div class="auth-tabs">
+                    <button type="button" class="auth-tab active" data-method="phone" onclick="selectAuthMethod('phone')">
+                        Telefon ile Doğrula
+                    </button>
+                    <button type="button" class="auth-tab" data-method="email" onclick="selectAuthMethod('email')">
+                        E-posta ile Doğrula
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Kayıt Form Adımları -->
+            <div class="register-steps">
+                <!-- Telefon ile Doğrulama -->
+                <div class="auth-tab-content active" id="phoneAuthTab">
+                    <div class="register-step" id="phoneVerificationStep">
+                        <h3>Telefon Doğrulama</h3>
+                        <div class="form-group">
+                            <label for="phone">Telefon Numarası</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="5XXXXXXXXX" pattern="^5\d{9}$">
+                            <small>Başında 0 olmadan 10 haneli olarak girin (5XXXXXXXXX)</small>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="requestOtpBtn" class="btn-primary" onclick="handleRequestOtp()">
+                                Doğrulama Kodu Gönder
+                            </button>
+                        </div>
+                        <div id="otpSection" style="display: none;">
+                            <div class="form-group">
+                                <label for="otpCode">Doğrulama Kodu</label>
+                                <input type="text" id="otpCode" name="otpCode" required placeholder="Gönderilen 6 haneli kodu girin" maxlength="6" pattern="[0-9]{6}">
+                                <button type="button" id="verifyPhoneOtp" class="btn-primary" onclick="handleVerifyPhoneOtp()">
+                                    Doğrula
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- E-posta ile Doğrulama -->
+                <div class="auth-tab-content" id="emailAuthTab">
+                    <div class="register-step" id="emailVerificationStep">
+                        <h3>E-posta Doğrulama</h3>
+                        <div class="form-group">
+                            <label for="emailAuth">E-posta Adresi</label>
+                            <input type="email" id="emailAuth" name="emailAuth" required placeholder="E-posta adresinizi girin">
+                        </div>
+                        <div class="form-group">
+                            <button type="button" id="requestEmailOtpBtn" class="btn-primary" onclick="handleRequestEmailOtp()">
+                                Doğrulama Kodu Gönder
+                            </button>
+                        </div>
+                        <div id="emailVerifySection" style="display: none;">
+                            <div class="form-group">
+                                <label for="emailCode">Doğrulama Kodu</label>
+                                <input type="text" id="emailCode" name="emailCode" required placeholder="E-postanıza gönderilen kodu girin" maxlength="6" pattern="[0-9]{6}">
+                                <button type="button" id="verifyEmailOtpBtn" class="btn-primary" onclick="verifyEmailOtp()">
+                                    Doğrula
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Şifre Alanları -->
+                <div class="password-section">
+                    <div class="form-group">
+                        <label for="password">Şifre</label>
+                        <input type="password" id="password" name="password" required 
+                            placeholder="Şifrenizi girin" minlength="6">
+                        <small>En az 6 karakter uzunluğunda olmalıdır</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordConfirm">Şifre Tekrar</label>
+                        <input type="password" id="passwordConfirm" name="passwordConfirm" required 
+                            placeholder="Şifrenizi tekrar girin" minlength="6">
+                    </div>
+                </div>
+
+                <!-- Kayıt Ol Butonu -->
+                <div class="form-group submit-section">
+                    <button type="button" id="submitBtn" class="btn-primary" onclick="handleSubmit(event)">
+                        Kayıt Ol
+                    </button>
+                </div>
+            </div>
+        </div>
+        </form>
+        <div id="registerMessage" class="auth-message"></div>
+    </div>
+
+    <script>
+        // Global variables
+        let selectedUserType = null;
+        let selectedAuthMethod = 'phone';
+        let verifiedPhone = null;
+        let verifiedEmail = null;
+        let currentPhone = null;
+        let currentEmail = null;
+
+        // Debug log for initial state
+        console.log('Initial state:', {
+            selectedUserType,
+            selectedAuthMethod,
+            verifiedPhone,
+            verifiedEmail,
+            currentPhone,
+            currentEmail
+        });
+
+        // User type selection
+        function selectUserType(userType) {
+            selectedUserType = userType;
+            document.querySelectorAll('.user-type-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-type') === userType);
+            });
+            console.log('User type selected:', userType);
+        }
+
+        // Authentication method selection
+        function selectAuthMethod(method) {
+            selectedAuthMethod = method;
+            // Update tab buttons
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.getAttribute('data-method') === method);
+            });
+            // Update content visibility
+            document.getElementById('phoneAuthTab').classList.toggle('active', method === 'phone');
+            document.getElementById('emailAuthTab').classList.toggle('active', method === 'email');
+        }
+
+        // Phone OTP request
+        async function handleRequestOtp() {
+            currentPhone = document.getElementById('phone')?.value?.trim();
+            const messageEl = document.getElementById('registerMessage');
+
+            if (!currentPhone?.match(/^5\d{9}$/)) {
+                showMessage('Geçerli bir telefon numarası girin (5XXXXXXXXX formatında)', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8082/insanet/auth/request-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emailOrPhone: currentPhone })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('otpSection').style.display = 'block';
+                    document.getElementById('verifyPhoneOtp').style.display = 'inline-block';
+                    document.getElementById('requestOtpBtn').style.display = 'none';
+                    showMessage('Doğrulama kodu gönderildi', 'success');
+                } else {
+                    throw new Error(data.message || 'Doğrulama kodu gönderilemedi');
+                }
+            } catch (error) {
+                showMessage(error.message, 'error');
+            }
+        }
+
+        // Phone OTP verification
+        async function handleVerifyPhoneOtp() {
+            const phone = document.getElementById('phone').value.trim();
+            const otpCode = document.getElementById('otpCode').value.trim();
+
+            if (!otpCode) {
+                showMessage('Doğrulama kodunu girin', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8082/insanet/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emailOrPhone: phone, otpCode: otpCode })
+                });
+
+                const data = await response.json();
+                console.log('Phone verification response:', data);
+
+                if (response.ok) {
+                    verifiedPhone = phone;
+                    showMessage('Telefon doğrulaması başarılı', 'success');
+                    console.log('Phone verified:', verifiedPhone);
+                } else {
+                    throw new Error(data.message || 'Doğrulama başarısız');
+                }
+            } catch (error) {
+                console.error('Phone verification error:', error);
+                showMessage(error.message, 'error');
+                verifiedPhone = null;
+            }
+        }
+
+        // Email OTP request
+        async function handleRequestEmailOtp() {
+            const email = document.getElementById('emailAuth').value.trim();
+
+            if (!email || !/\S+@\S+\.\S+/.test(email)) {
+                showMessage('Geçerli bir e-posta adresi girin', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8082/insanet/auth/request-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emailOrPhone: email })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    document.getElementById('emailVerifySection').style.display = 'block';
+                    document.getElementById('verifyEmailOtpBtn').style.display = 'inline-block';
+                    document.getElementById('requestEmailOtpBtn').style.display = 'none';
+                    showMessage('Doğrulama kodu e-posta adresinize gönderildi', 'success');
+                } else {
+                    throw new Error(data.message || 'Doğrulama kodu gönderilemedi');
+                }
+            } catch (error) {
+                showMessage(error.message, 'error');
+            }
+        }
+
+        // Email OTP verification
+        async function verifyEmailOtp() {
+            const email = document.getElementById('emailAuth').value.trim();
+            const emailCode = document.getElementById('emailCode').value.trim();
+
+            if (!emailCode) {
+                showMessage('Doğrulama kodunu girin', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:8082/insanet/auth/verify-otp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emailOrPhone: email, otpCode: emailCode })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    verifiedEmail = email;
+                    showMessage('E-posta doğrulaması başarılı', 'success');
+                } else {
+                    throw new Error(data.message || 'Doğrulama başarısız');
+                }
+            } catch (error) {
+                showMessage(error.message, 'error');
+            }
+        }
+
+        // Helper function to show messages
+        function showMessage(message, type) {
+            const messageEl = document.getElementById('registerMessage');
+            messageEl.textContent = message;
+            messageEl.className = `auth-message ${type}`;
+        }
+
+        // Form validation
+        function checkFormValidity() {
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('passwordConfirm').value;
+            const messageEl = document.getElementById('registerMessage');
+
+            // Clear previous error messages
+            messageEl.textContent = '';
+            messageEl.className = 'auth-message';
+
+            // Only validate if both password fields have values
+            if (password && passwordConfirm) {
+                // Check password length
+                if (password.length < 6) {
+                    showMessage('Şifre en az 6 karakter olmalıdır', 'error');
+                    return false;
+                }
+
+                // Check if passwords match
+                if (password !== passwordConfirm) {
+                    showMessage('Şifreler eşleşmiyor', 'error');
+                    return false;
+                }
+
+                // If all validations pass
+                showMessage('Şifreler eşleşti', 'success');
+            }
+
+            return true;
+        }
+
+        let passwordTimeout;
+        // Add event listeners for password validation with debounce
+        document.getElementById('password').addEventListener('input', function() {
+            clearTimeout(passwordTimeout);
+            passwordTimeout = setTimeout(checkFormValidity, 500);
+        });
+
+        document.getElementById('passwordConfirm').addEventListener('input', function() {
+            clearTimeout(passwordTimeout);
+            passwordTimeout = setTimeout(checkFormValidity, 500);
+        });
+
+        // Form submission handler
+        async function handleSubmit(event) {
+            if (event) event.preventDefault();
+            console.log('Form submitted');
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+
+            try {
+                // Debug logs for verification status
+                console.log('Current verification status:', {
+                    selectedAuthMethod,
+                    verifiedPhone,
+                    verifiedEmail,
+                    selectedUserType
+                });
+
+                // Validate user type
+                if (!selectedUserType) {
+                    throw new Error('Lütfen kullanıcı tipini seçin');
+                }
+
+                // Get current input values
+                const phone = document.getElementById('phone')?.value?.trim();
+                const email = document.getElementById('emailAuth')?.value?.trim();
+                
+                // Get verified contact based on auth method
+                let verifiedContact;
+                if (selectedAuthMethod === 'phone') {
+                    if (!verifiedPhone || verifiedPhone !== phone) {
+                        throw new Error('Lütfen telefon numaranızı doğrulayın');
+                    }
+                    verifiedContact = verifiedPhone;
+                } else {
+                    if (!verifiedEmail || verifiedEmail !== email) {
+                        throw new Error('Lütfen e-posta adresinizi doğrulayın');
+                    }
+                    verifiedContact = verifiedEmail;
+                }
+
+                console.log('Verified contact info:', {
+                    method: selectedAuthMethod,
+                    contact: verifiedContact,
+                    phone: verifiedPhone,
+                    email: verifiedEmail
+                });
+
+                // Get and validate OTP code
+                const otpCode = selectedAuthMethod === 'phone' 
+                    ? document.getElementById('otpCode').value
+                    : document.getElementById('emailCode').value;
+                console.log('OTP code:', otpCode);
+
+                if (!otpCode) {
+                    throw new Error('Doğrulama kodu gerekli');
+                }
+
+                // Get and validate password
+                const password = document.getElementById('password').value;
+                const passwordConfirm = document.getElementById('passwordConfirm').value;
+                console.log('Password length:', password.length);
+
+                if (!password || password.length < 6) {
+                    throw new Error('Şifre en az 6 karakter olmalıdır');
+                }
+
+                if (password !== passwordConfirm) {
+                    throw new Error('Şifreler eşleşmiyor');
+                }
+
+                // Update current input values
+                currentPhone = document.getElementById('phone')?.value?.trim();
+                currentEmail = document.getElementById('emailAuth')?.value?.trim();
+
+                console.log('Current form values:', {
+                    currentPhone,
+                    currentEmail,
+                    selectedAuthMethod,
+                    verifiedPhone,
+                    verifiedEmail
+                });
+
+                // Validate contact info first
+                if (selectedAuthMethod === 'phone') {
+                    if (!currentPhone) {
+                        throw new Error('Telefon numarası gerekli');
+                    }
+                    if (!verifiedPhone || verifiedPhone !== currentPhone) {
+                        throw new Error('Telefon numaranızı doğrulayın');
+                    }
+                } else if (selectedAuthMethod === 'email') {
+                    if (!currentEmail) {
+                        throw new Error('E-posta adresi gerekli');
+                    }
+                    if (!verifiedEmail || verifiedEmail !== currentEmail) {
+                        throw new Error('E-posta adresinizi doğrulayın');
+                    }
+                }
+
+                // Prepare form data
+                const formData = {
+                    password: password,
+                    userType: selectedUserType,
+                    otpCode: otpCode
+                };
+
+                // Kayıt yöntemine göre form verilerini ayarla
+                if (selectedAuthMethod === 'phone') {
+                    formData.emailOrPhone = currentPhone;
+                    formData.phoneNumber = currentPhone;
+                    formData.email = null;
+                } else {
+                    formData.emailOrPhone = currentEmail;
+                    formData.email = currentEmail;
+                    formData.phoneNumber = null;
+                }
+
+                console.log('Registration data:', formData);
+
+                console.log('Current auth state:', {
+                    selectedAuthMethod,
+                    currentPhone,
+                    currentEmail,
+                    verifiedPhone,
+                    verifiedEmail
+                });
+
+                console.log('Prepared form data:', formData);
+
+                // Log the request details
+                console.log('Registration request:', {
+                    formData,
+                    authMethod: selectedAuthMethod,
+                    verifiedPhone,
+                    verifiedEmail
+                });
+
+                // Make API request
+                const response = await fetch('http://localhost:8082/insanet/auth/register', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                console.log('Response status:', response.status);
+                const data = await response.json();
+                console.log('Registration response:', data);
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Kayıt işlemi başarısız');
+                }
+
+                // If we get here, registration was successful
+                showMessage('Kayıt başarılı! Yönlendiriliyorsunuz...', 'success');
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                showMessage(error.message || 'Kayıt sırasında bir hata oluştu', 'error');
+                submitBtn.disabled = false;
+            }
+        };
+
+        // Initial form check
+        checkFormValidity();
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İhaleler - İnşanet</title>
+</head>
+<body>
+    <div class="auctions-container">
+        <div class="auctions-header">
+            <h2>İhaleler</h2>
+            <p>En güncel inşaat malzemeleri ihale fırsatları</p>
+            <!-- İhale Oluştur Butonu - Yalnızca giriş yapmış kullanıcılar görebilecek -->
+            <div class="create-auction-button-container" id="createAuctionButtonContainer">
+                <button id="createAuctionButton" class="btn-create-auction">
+                    <i class="fa-solid fa-plus"></i> İhale Oluştur
+                </button>
+            </div>
+        </div>
+
+        <!-- İhale Sekmeleri -->
+        <div class="auctions-tabs">
+            <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="open-auctions">Açık İhaleler</button>
+                <button class="tab-btn" data-tab="closed-auctions">Kapalı İhaleler</button>
+            </div>
+            
+            <!-- Arama ve Filtreleme -->
+            <div class="auctions-search-bar">
+                <div class="search-filters">
+                    <input type="text" id="auction-search" placeholder="İhale ara..." class="auction-search-input">
+                    <div class="filter-container">
+                        <!-- Yeni Ürün Filtresi -->
+                        <div class="multi-select-wrapper product-filter-wrapper">
+                            <div class="multi-select-header" id="productFilterHeader">
+                                <span class="multi-select-placeholder">Tüm Ürünler</span>
+                                <span class="multi-select-selected-count"></span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="productFilterDropdown">
+                                <div class="multi-select-search">
+                                    <input type="text" placeholder="Ürün Ara..." id="productSearchInput">
+                                    <i class="fa-solid fa-search"></i>
+                                </div>
+                                <div class="multi-select-actions">
+                                    <button id="selectAllProducts">Tümünü Seç</button>
+                                    <button id="clearAllProducts">Temizle</button>
+                                </div>
+                                <div class="multi-select-options" id="productOptions">
+                                    <!-- Ürün seçenekleri JavaScript ile doldurulacak -->
+                                </div>
+                                <div class="multi-select-footer">
+                                    <button id="applyProductFilter">Uygula</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Çoklu Lokasyon Filtresi -->
+                        <div class="multi-select-wrapper location-filter-wrapper">
+                            <div class="multi-select-header" id="locationFilterHeader">
+                                <span class="multi-select-placeholder">Tüm Lokasyonlar</span>
+                                <span class="multi-select-selected-count"></span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                            <div class="multi-select-dropdown" id="locationFilterDropdown">
+                                <div class="multi-select-search">
+                                    <input type="text" placeholder="İl Ara..." id="locationSearchInput">
+                                    <i class="fa-solid fa-search"></i>
+                                </div>
+                                <div class="multi-select-actions">
+                                    <button id="selectAllLocations">Tümünü Seç</button>
+                                    <button id="clearAllLocations">Temizle</button>
+                                </div>
+                                <div class="multi-select-options" id="locationOptions">
+                                    <!-- İl seçenekleri JavaScript ile doldurulacak -->
+                                </div>
+                                <div class="multi-select-footer">
+                                    <button id="applyLocationFilter">Uygula</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <select id="filterSort" class="filter-select">
+                            <option value="newest">En Yeni</option>
+                            <option value="closing-soon">Yakında Kapanacak</option>
+                            <option value="price-high">Fiyat (Yüksek-Düşük)</option>
+                            <option value="price-low">Fiyat (Düşük-Yüksek)</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="resetFilters" class="btn-reset">Filtreleri Temizle</button>
+            </div>
+
+            <!-- Sekmeler İçeriği -->
+            <div class="tab-content">
+                <!-- Açık İhaleler Sekmesi -->
+                <div id="open-auctions" class="tab-pane active">
+                    <div class="auctions-list" id="open-auctions-list">
+                        <!-- İhale verileri JavaScript ile yüklenecek -->
+                        <div class="loading-auctions">
+                            <div class="spinner"></div>
+                            <p>İhaleler yükleniyor...</p>
+                        </div>
+                    </div>
+                    <div class="auctions-pagination" id="open-auctions-pagination">
+                        <!-- Sayfalama butonları JavaScript ile eklenecek -->
+                    </div>
+                </div>
+
+                <!-- Kapalı İhaleler Sekmesi -->
+                <div id="closed-auctions" class="tab-pane">
+                    <div class="auctions-list" id="closed-auctions-list">
+                        <!-- İhale verileri JavaScript ile yüklenecek -->
+                        <div class="loading-auctions">
+                            <div class="spinner"></div>
+                            <p>İhaleler yükleniyor...</p>
+                        </div>
+                    </div>
+                    <div class="auctions-pagination" id="closed-auctions-pagination">
+                        <!-- Sayfalama butonları JavaScript ile eklenecek -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- İhale Şablonu (JavaScript tarafından klonlanarak kullanılacak) -->
+    <template id="auction-card-template">
+        <div class="auction-card">
+            <div class="auction-status">
+                <span class="status-indicator"></span>
+            </div>
+            <div class="auction-image">
+                <img src="" alt="İhale Görseli">
+            </div>
+            <div class="auction-details">
+                <h3 class="auction-title"></h3>
+                <div class="auction-info">
+                    <div class="auction-meta">
+                        <p class="auction-category"><i class="fa-solid fa-tags"></i> <span></span></p>
+                        <p class="auction-location"><i class="fa-solid fa-location-dot"></i> <span></span></p>
+                    </div>
+                    <div class="auction-price">
+                        <p class="starting-price">Başlangıç: <span></span></p>
+                        <p class="current-bid">Güncel Teklif: <span></span></p>
+                    </div>
+                    <div class="auction-time">
+                        <p class="time-left"><i class="fa-solid fa-clock"></i> <span></span></p>
+                        <p class="bid-count"><i class="fa-solid fa-gavel"></i> <span></span> Teklif</p>
+                    </div>
+                </div>
+                <div class="auction-actions">
+                    <a href="#" class="btn-view-auction">İhaleyi İncele</a>
+                    <button class="btn-quick-bid">Hızlı Teklif Ver</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        // Global yardımcı değişkenler
+        // Bu değişkenleri kaldırıyorum, bunlar artık auctions.js dosyasında tanımlanıyor
+        
+        // --- Global Yardımcı Fonksiyonlar ---
+        function debounce(func, delay) {
+             let timeoutId;
+             return function(...args) {
+                 clearTimeout(timeoutId);
+                 timeoutId = setTimeout(() => {
+                     func.apply(this, args);
+                 }, delay);
+             };
+         }
+
+        function formatCurrency(amount) {
+             if (isNaN(amount) || amount === null) {
+                  return 'N/A';
+             }
+             return new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(amount);
+         }
+         
+         function formatCurrencyFromString(priceString) {
+             if (!priceString) return 'N/A';
+             const match = priceString.match(/(\\d+(\\.\\d+)?)/);
+             const amount = match ? parseFloat(match[0]) : 0;
+             return formatCurrency(amount);
+         }
+         
+         // Her şey artık auctions.js'de yönetiliyor, bu fonksiyonu burada tanımlamaya gerek yok
+         // function placeBid(auctionId, currentBidString) { ... }
+        // --- Bitiş: Global Yardımcı Fonksiyonlar ---
+
+        // --- Ana İşlevler --- 
+        // Artık tüm bu fonksiyonlar auctions.js dosyasında tanımlanıyor
+        // Bu eski tanımları kaldırıyorum
+        // function filterAuctions() { ... }
+        // async function loadAuctions(...) { ... }
+        // function createAuctionCard(...) { ... }
+        // function createPagination(...) { ... }
+        // function fetchAuctionsFromAPI(...) { ... }
+        // function generateMockAuctions(...) { ... }
+        // --- Bitiş: Ana İşlevler ---
+
+        // --- Filtre Kurulum Fonksiyonları ---
+        // Artık tüm bu fonksiyonlar auctions.js dosyasında tanımlanıyor
+        // Bu eski tanımları kaldırıyorum
+        // function setupProductFilter() { ... }
+        // function initializeLocationFilter() { ... }
+        // --- Bitiş: Filtre Kurulum Fonksiyonları ---        
+    </script>
+</body>
+</html> 

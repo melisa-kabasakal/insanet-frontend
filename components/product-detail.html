@@ -1,0 +1,257 @@
+<!-- Ürün Detay Sayfası Bileşeni -->
+<div class="product-detail-container">
+    <div class="product-detail-content">
+        <div class="product-image-container">
+            <img id="productImage" src="./img/placeholder.jpg" alt="Ürün Görseli">
+        </div>
+        <div class="product-info-container">
+            <h2 id="productName">Ürün Yükleniyor...</h2>
+            <p id="productDescription" class="product-description"></p>
+            <p id="productPrice" class="product-price"></p>
+            <p id="productSupplier" class="product-supplier"></p>
+            <p id="productCategory" class="product-category"></p>
+            
+            <div class="product-actions">
+                <div class="quantity-selector">
+                    <button id="decreaseQuantity" class="quantity-btn">-</button>
+                    <input type="number" id="quantity" value="1" min="1" max="999">
+                    <button id="increaseQuantity" class="quantity-btn">+</button>
+                </div>
+                <button id="addToCart" class="btn-primary">Sepete Ekle</button>
+                <button id="addToAuction" class="btn-secondary">İhaleye Ekle</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="product-tabs">
+        <div class="tab-header">
+            <button class="tab-btn active" data-tab="details">Ürün Detayları</button>
+            <button class="tab-btn" data-tab="specs">Teknik Özellikler</button>
+            <button class="tab-btn" data-tab="reviews">Değerlendirmeler</button>
+        </div>
+        <div class="tab-content">
+            <div id="details" class="tab-pane active">
+                <p>Ürün detayları yükleniyor...</p>
+            </div>
+            <div id="specs" class="tab-pane">
+                <p>Teknik özellikler yükleniyor...</p>
+            </div>
+            <div id="reviews" class="tab-pane">
+                <p>Değerlendirmeler yükleniyor...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // apiService'i global scope'tan al
+    const apiService = window.apiService || {};
+    
+    // Sayfa yüklendiğinde çalışacak fonksiyon
+    function initProductDetail() {
+        // URL'den ürün ID'sini al
+        const hashParts = window.location.hash.split('/');
+        const productId = hashParts.length > 2 ? hashParts[2] : null;
+        
+        if (!productId) {
+            window.location.hash = '/404';
+            return;
+        }
+        
+        // Ürün detaylarını yükle
+        loadProductDetails(productId);
+        
+        // Miktar artırma/azaltma butonları
+        const decreaseBtn = document.getElementById('decreaseQuantity');
+        const increaseBtn = document.getElementById('increaseQuantity');
+        
+        if (decreaseBtn) {
+            decreaseBtn.addEventListener('click', function() {
+                const quantityInput = document.getElementById('quantity');
+                if (quantityInput) {
+                    const currentValue = parseInt(quantityInput.value) || 1;
+                    if (currentValue > 1) {
+                        quantityInput.value = currentValue - 1;
+                    }
+                }
+            });
+        }
+        
+        if (increaseBtn) {
+            increaseBtn.addEventListener('click', function() {
+                const quantityInput = document.getElementById('quantity');
+                if (quantityInput) {
+                    const currentValue = parseInt(quantityInput.value) || 1;
+                    quantityInput.value = currentValue + 1;
+                }
+            });
+        }
+        
+        // Sepete ekle butonu
+        const addToCartBtn = document.getElementById('addToCart');
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', function() {
+                const quantityInput = document.getElementById('quantity');
+                const quantity = quantityInput ? (parseInt(quantityInput.value) || 1) : 1;
+                alert(`${quantity} adet ürün sepete eklendi.`);
+            });
+        }
+        
+        // İhaleye ekle butonu
+        const addToAuctionBtn = document.getElementById('addToAuction');
+        if (addToAuctionBtn) {
+            addToAuctionBtn.addEventListener('click', function() {
+                const quantityInput = document.getElementById('quantity');
+                const quantity = quantityInput ? (parseInt(quantityInput.value) || 1) : 1;
+                alert(`${quantity} adet ürün ihale listenize eklendi.`);
+            });
+        }
+        
+        // Tab değiştirme
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Aktif tab butonunu değiştir
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Aktif tab içeriğini değiştir
+                const tabId = this.getAttribute('data-tab');
+                if (tabId) {
+                    const tabPanes = document.querySelectorAll('.tab-pane');
+                    tabPanes.forEach(pane => pane.classList.remove('active'));
+                    
+                    const targetPane = document.getElementById(tabId);
+                    if (targetPane) {
+                        targetPane.classList.add('active');
+                    }
+                }
+            });
+        });
+    }
+    
+    // Ürün detaylarını yükle
+    async function loadProductDetails(productId) {
+        try {
+            if (!apiService.getProductById) {
+                console.error('apiService.getProductById fonksiyonu bulunamadı');
+                document.getElementById('productName').textContent = 'API servisi yüklenemedi';
+                return;
+            }
+            
+            const product = await apiService.getProductById(productId);
+            
+            if (!product) {
+                window.location.hash = '/404';
+                return;
+            }
+            
+            // Ürün bilgilerini güncelle
+            const nameEl = document.getElementById('productName');
+            const descEl = document.getElementById('productDescription');
+            const priceEl = document.getElementById('productPrice');
+            
+            if (nameEl) nameEl.textContent = product.name;
+            if (descEl) descEl.textContent = product.description;
+            if (priceEl) priceEl.textContent = `${product.price.toLocaleString('tr-TR')} ₺`;
+            
+            // Ürün görseli
+            const imageEl = document.getElementById('productImage');
+            if (imageEl && product.image) {
+                imageEl.src = `./img/${product.image}`;
+                imageEl.alt = product.name;
+            }
+            
+            // Tedarikçi bilgisini getir
+            if (product.supplier && apiService.getSuppliers) {
+                try {
+                    const suppliers = await apiService.getSuppliers();
+                    const supplier = suppliers.find(s => s.id === product.supplier);
+                    const supplierEl = document.getElementById('productSupplier');
+                    
+                    if (supplier && supplierEl) {
+                        supplierEl.textContent = `Tedarikçi: ${supplier.name}`;
+                    }
+                } catch (error) {
+                    console.error('Tedarikçi bilgisi yüklenirken hata:', error);
+                }
+            }
+            
+            // Kategori bilgisini getir
+            if (product.category && apiService.getCategories) {
+                try {
+                    const categories = await apiService.getCategories();
+                    const category = categories.find(c => c.id === product.category);
+                    const categoryEl = document.getElementById('productCategory');
+                    
+                    if (category && categoryEl) {
+                        categoryEl.textContent = `Kategori: ${category.name}`;
+                    }
+                } catch (error) {
+                    console.error('Kategori bilgisi yüklenirken hata:', error);
+                }
+            }
+            
+            // Tab içeriklerini güncelle
+            const detailsTab = document.getElementById('details');
+            const specsTab = document.getElementById('specs');
+            const reviewsTab = document.getElementById('reviews');
+            
+            if (detailsTab) {
+                detailsTab.innerHTML = `
+                    <h3>Ürün Detayları</h3>
+                    <p>${product.description}</p>
+                    <p>Bu ürün, İnşanet platformunda satışa sunulmaktadır. Ürün hakkında daha fazla bilgi için tedarikçi ile iletişime geçebilirsiniz.</p>
+                `;
+            }
+            
+            if (specsTab) {
+                specsTab.innerHTML = `
+                    <h3>Teknik Özellikler</h3>
+                    <table class="specs-table">
+                        <tr>
+                            <th>Özellik</th>
+                            <th>Değer</th>
+                        </tr>
+                        <tr>
+                            <td>Ürün Kodu</td>
+                            <td>PRD-${product.id}</td>
+                        </tr>
+                        <tr>
+                            <td>Stok Durumu</td>
+                            <td>Mevcut</td>
+                        </tr>
+                        <tr>
+                            <td>Teslimat Süresi</td>
+                            <td>3-5 iş günü</td>
+                        </tr>
+                    </table>
+                `;
+            }
+            
+            if (reviewsTab) {
+                reviewsTab.innerHTML = `
+                    <h3>Değerlendirmeler</h3>
+                    <p>Bu ürün için henüz değerlendirme bulunmamaktadır.</p>
+                    <button class="btn-secondary">Değerlendirme Yap</button>
+                `;
+            }
+            
+        } catch (error) {
+            console.error('Ürün detayları yüklenirken hata:', error);
+            const nameEl = document.getElementById('productName');
+            if (nameEl) {
+                nameEl.textContent = 'Ürün yüklenirken hata oluştu';
+            }
+        }
+    }
+    
+    // Sayfa yüklendiğinde veya hash değiştiğinde çalıştır
+    document.addEventListener('DOMContentLoaded', initProductDetail);
+    window.addEventListener('hashchange', function() {
+        // Hash değiştiğinde ve product-detail sayfasındaysa yeniden yükle
+        if (window.location.hash.startsWith('#/product/')) {
+            initProductDetail();
+        }
+    });
+</script>

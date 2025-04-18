@@ -1,0 +1,580 @@
+<!-- Profil Sayfası Ana Kapsayıcı -->
+<div class="profile-container">
+    <!-- Profil başlığını kaldır -->
+    <!-- <h2>Profilim</h2> Silindi -->
+    <div class="profile-layout">
+        <!-- Sol Menü -->
+        <aside class="profile-menu">
+            <ul>
+                <li><a href="#/profile/account" class="profile-menu-item active" data-section="account">Hesabım</a></li>
+                <li><a href="#/profile/messages" class="profile-menu-item" data-section="messages">Mesajlar <span class="message-count-badge" style="display: none;">0</span></a></li>
+                <li><a href="#/profile/orders" class="profile-menu-item" data-section="orders">Siparişlerim</a></li>
+                <li><a href="#/profile/password" class="profile-menu-item" data-section="password">Şifre İşlemleri</a></li>
+                <li><a href="#/profile/authorization" class="profile-menu-item" data-section="authorization">Yetkilendirme İşlemleri</a></li>
+                <li><a href="#/profile/faq" class="profile-menu-item" data-section="faq">Sık Sorulan Bölümler</a></li>
+                <li><a href="#/logout" class="profile-menu-item" id="logoutButton">Çıkış Yap</a></li>
+            </ul>
+        </aside>
+
+        <!-- Sağ İçerik Alanı -->
+        <section class="profile-content">
+            <!-- İçerik buraya dinamik olarak yüklenecek -->
+            <div id="profile-section-content">
+                <!-- Başlangıçta Hesabım bölümü yüklenebilir -->
+                <p>Lütfen bir bölüm seçin.</p>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- Alt Bölüm Şablonları (Başlangıçta gizli) -->
+<template id="profile-account-template">
+    <div class="profile-section" id="account-section">
+        <h2>Hesap / Firma Bilgileri</h2>
+        <form id="account-details-form" enctype="multipart/form-data">
+            <!-- Kişisel Bilgiler -->
+            <fieldset class="form-fieldset">
+                <legend>Kişisel Bilgiler</legend>
+                <div class="form-group profile-picture-section">
+                    <label>Profil Fotoğrafı</label>
+                    <img src="img/default-avatar.png" alt="Profil Fotoğrafı" id="profile-pic-preview" width="100" height="100">
+                    <input type="file" id="profile-pic-upload" name="profilePicture" accept="image/*">
+                    <button type="button" id="upload-pic-btn">Yükle/Değiştir</button>
+                </div>
+                <div class="form-row">
+                    <div class="form-group form-group-half">
+                        <label for="username">Kullanıcı Adı:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group form-group-half">
+                        <label for="name">Ad Soyad:</label> 
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                </div>
+                 <div class="form-row">
+                    <div class="form-group form-group-half">
+                        <label for="email">E-posta:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group form-group-half">
+                        <label for="phone">Telefon:</label>
+                        <input type="tel" id="phone" name="phone" placeholder="5XXXXXXXXX">
+                    </div>
+                </div>
+                 <div class="form-group">
+                     <label for="role">Görevi:</label> 
+                     <input type="text" id="role" name="role" >
+                 </div>
+            </fieldset>
+            
+            <!-- Firma Bilgileri -->
+            <fieldset class="form-fieldset">
+                <legend>Firma Bilgileri</legend>
+                <div class="form-group">
+                    <label for="companyName">Firma Kısa Adı:</label>
+                    <input type="text" id="companyName" name="companyName">
+                </div>
+                <div class="form-group">
+                    <label for="companyFullName">Firma Tam Ünvanı:</label>
+                    <input type="text" id="companyFullName" name="companyFullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="taxId">Firma Vergi Kimlik Numarası (VKN):</label>
+                    <input type="text" id="taxId" name="taxId" required pattern="[0-9]{10}" title="10 haneli VKN giriniz">
+                </div>
+            </fieldset>
+
+            <!-- Firma Belgeleri -->
+             <fieldset class="form-fieldset">
+                <legend>Firma Belgeleri</legend>
+                <p class="form-hint">Aşağıdaki belgeleri PDF, JPEG, PNG veya DOCX formatında yükleyebilirsiniz. Tüm belgelerin yüklenmesi zorunludur.</p>
+                 <div class="form-group file-upload-group">
+                    <label for="taxCertificate">Vergi Levhası:</label>
+                    <div class="file-upload-container">
+                        <label for="taxCertificate" class="custom-file-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Dosya Seç
+                        </label>
+                        <input type="file" id="taxCertificate" name="taxCertificate" class="hidden-file-input" accept=".pdf,.jpg,.jpeg,.png,.docx" required>
+                        <span class="file-name-display"></span>
+                        <div class="file-upload-progress">
+                            <div class="file-upload-progress-bar"></div>
+                        </div>
+                    </div>
+                    <a href="#" class="view-uploaded" data-doc-type="taxCertificate" style="display:none;">Yüklü Belgeyi Görüntüle</a>
+                 </div>
+                 <div class="form-group file-upload-group">
+                    <label for="tradeRegistryGazette">Ticaret Sicil Gazetesi:</label>
+                    <div class="file-upload-container">
+                        <label for="tradeRegistryGazette" class="custom-file-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Dosya Seç
+                        </label>
+                        <input type="file" id="tradeRegistryGazette" name="tradeRegistryGazette" class="hidden-file-input" accept=".pdf,.jpg,.jpeg,.png,.docx" required>
+                        <span class="file-name-display"></span>
+                        <div class="file-upload-progress">
+                            <div class="file-upload-progress-bar"></div>
+                        </div>
+                    </div>
+                    <a href="#" class="view-uploaded" data-doc-type="tradeRegistryGazette" style="display:none;">Yüklü Belgeyi Görüntüle</a>
+                 </div>
+                 <div class="form-group file-upload-group">
+                    <label for="signatureCircular">Şirket Yetkili İmza Sirküsü Beyanı:</label>
+                    <div class="file-upload-container">
+                        <label for="signatureCircular" class="custom-file-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Dosya Seç
+                        </label>
+                        <input type="file" id="signatureCircular" name="signatureCircular" class="hidden-file-input" accept=".pdf,.jpg,.jpeg,.png,.docx" required>
+                        <span class="file-name-display"></span>
+                        <div class="file-upload-progress">
+                            <div class="file-upload-progress-bar"></div>
+                        </div>
+                    </div>
+                    <a href="#" class="view-uploaded" data-doc-type="signatureCircular" style="display:none;">Yüklü Belgeyi Görüntüle</a>
+                 </div>
+                 <div class="form-group file-upload-group">
+                    <label for="activityCertificate">Firma Faaliyet Belgesi:</label>
+                    <div class="file-upload-container">
+                        <label for="activityCertificate" class="custom-file-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Dosya Seç
+                        </label>
+                        <input type="file" id="activityCertificate" name="activityCertificate" class="hidden-file-input" accept=".pdf,.jpg,.jpeg,.png,.docx" required>
+                        <span class="file-name-display"></span>
+                        <div class="file-upload-progress">
+                            <div class="file-upload-progress-bar"></div>
+                        </div>
+                    </div>
+                    <a href="#" class="view-uploaded" data-doc-type="activityCertificate" style="display:none;">Yüklü Belgeyi Görüntüle</a>
+                 </div>
+             </fieldset>
+            
+            <button type="submit" class="btn-save-profile">Bilgileri Kaydet</button>
+        </form>
+    </div>
+</template>
+
+<template id="profile-messages-template">
+    <div class="profile-section" id="messages-section">
+        <h2>Mesajlar</h2>
+        <div class="messages-container">
+            <!-- Sol taraf - Mesaj Listeleri -->
+            <div class="messages-sidebar">
+                <div class="messages-search">
+                    <input type="text" id="messages-search" placeholder="Mesajlarda ara...">
+                    <button id="messages-search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="messages-tabs">
+                    <button class="messages-tab active" data-tab="inbox">Gelen Kutusu</button>
+                    <button class="messages-tab" data-tab="sent">Gönderilen</button>
+                </div>
+                <div class="messages-list-container">
+                    <ul id="messages-list" class="messages-list">
+                        <!-- Mesajlar dinamik olarak buraya yüklenecek -->
+                        <li class="loading-message">Mesajlar yükleniyor...</li>
+                    </ul>
+                </div>
+                <button id="new-message-btn" class="new-message-btn">Yeni Mesaj</button>
+            </div>
+            
+            <!-- Sağ taraf - Mesaj Okuma ve Yazma Alanı -->
+            <div class="messages-content">
+                <!-- Mesaj okuma alanı -->
+                <div id="message-view" class="message-view">
+                    <div class="empty-message-view">
+                        <i class="fas fa-envelope"></i>
+                        <p>Okumak için bir mesaj seçin veya yeni mesaj oluşturun</p>
+                    </div>
+                </div>
+                
+                <!-- Yeni mesaj oluşturma alanı (başlangıçta gizli) -->
+                <div id="message-compose" class="message-compose" style="display: none;">
+                    <h3>Yeni Mesaj</h3>
+                    <form id="message-form">
+                        <div class="form-group">
+                            <label for="message-recipient-type">Alıcı Türü:</label>
+                            <select id="message-recipient-type" required>
+                                <!-- Seçenekler kullanıcı rolüne göre dinamik olarak doldurulacak -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-recipient">Alıcı:</label>
+                            <select id="message-recipient" required>
+                                <option value="">Lütfen önce alıcı türünü seçin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message-subject">Konu:</label>
+                            <input type="text" id="message-subject" required placeholder="Mesaj konusu">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-content">Mesaj:</label>
+                            <textarea id="message-content" required placeholder="Mesajınızı buraya yazın..."></textarea>
+                        </div>
+                        <div class="form-group message-attachments">
+                            <label for="message-file">Dosya Ekle:</label>
+                            <div class="file-upload-container">
+                                <label for="message-file" class="custom-file-upload">
+                                    <i class="fas fa-cloud-upload-alt"></i> Dosyaları Seç
+                                </label>
+                                <input type="file" id="message-file" class="hidden-file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.mp4,.docx,.xlsx,.xls">
+                                <div class="file-type-info">Desteklenen dosya formatları: PDF, JPEG, PNG, MP4, DOCX, Excel</div>
+                                <div class="file-upload-progress">
+                                    <div class="file-upload-progress-bar"></div>
+                                </div>
+                                <div class="file-upload-message"></div>
+                            </div>
+                            <div id="attachment-list" class="file-preview-area" style="display: none;"></div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" id="cancel-message-btn">İptal</button>
+                            <button type="submit" id="send-message-btn">Gönder</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Mesaj cevaplama alanı (başlangıçta gizli) -->
+                <div id="message-reply" class="message-reply" style="display: none;">
+                    <form id="reply-form">
+                        <div class="form-group">
+                            <textarea id="reply-content" required placeholder="Yanıtınızı buraya yazın..."></textarea>
+                        </div>
+                        <div class="form-group message-attachments">
+                            <label for="reply-file">Dosya Ekle:</label>
+                            <div class="file-upload-container">
+                                <label for="reply-file" class="custom-file-upload">
+                                    <i class="fas fa-cloud-upload-alt"></i> Dosyaları Seç
+                                </label>
+                                <input type="file" id="reply-file" class="hidden-file-input" multiple accept=".pdf,.jpg,.jpeg,.png,.mp4,.docx,.xlsx,.xls">
+                                <div class="file-type-info">Desteklenen dosya formatları: PDF, JPEG, PNG, MP4, DOCX, Excel</div>
+                                <div class="file-upload-progress">
+                                    <div class="file-upload-progress-bar"></div>
+                                </div>
+                                <div class="file-upload-message"></div>
+                            </div>
+                            <div id="reply-attachment-list" class="file-preview-area" style="display: none;"></div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" id="send-reply-btn">Yanıtla</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="profile-orders-template">
+    <div class="profile-section" id="orders-section">
+        <h2>Siparişlerim</h2>
+        
+        <!-- Sipariş Sorgulama Bölümü -->
+        <div class="orders-query-section">
+            <h3><i class="fas fa-search"></i> Sorgula</h3>
+            <form id="order-query-form">
+                <div class="form-row">
+                    <div class="form-group form-group-half">
+                        <label for="order-number"><i class="fas fa-hashtag"></i> Sipariş Talep No:</label>
+                        <input type="text" id="order-number" name="orderNumber" placeholder="Talep numarası ile arama yapın...">
+                    </div>
+                    <div class="form-group form-group-half">
+                        <label for="order-status"><i class="fas fa-tag"></i> Sipariş Statü Durumu:</label>
+                        <select id="order-status" name="status">
+                            <option value="">Tümü</option>
+                            <option value="İptal Edilen">İptal Edilen</option>
+                            <option value="Kesinleşmiş Olan Sipariş">Kesinleşmiş Olan Sipariş</option>
+                            <option value="Ön Sipariş">Ön Sipariş</option>
+                            <option value="Teslim Edilen Sipariş">Teslim Edilen Sipariş</option>
+                            <option value="Yolda Olan Sipariş">Yolda Olan Sipariş</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group form-group-half">
+                        <label for="start-date"><i class="fas fa-calendar-alt"></i> Başlangıç Tarihi:</label>
+                        <input type="date" id="start-date" name="startDate">
+                    </div>
+                    <div class="form-group form-group-half">
+                        <label for="end-date"><i class="fas fa-calendar-alt"></i> Bitiş Tarihi:</label>
+                        <input type="date" id="end-date" name="endDate">
+                    </div>
+                </div>
+                <div class="order-query-buttons">
+                    <button type="submit" id="query-order-btn" class="order-query-btn"><i class="fas fa-search"></i> Sorgula</button>
+                    <button type="reset" id="clear-order-btn" class="order-clear-btn"><i class="fas fa-undo"></i> Temizle</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Sipariş Listesi Bölümü -->
+        <div class="orders-list-section">
+            <h3>SİPARİŞ LİSTESİ</h3>
+            
+            <!-- Sayfa Kontrolleri -->
+            <div class="orders-list-controls">
+                <div class="orders-per-page">
+                    <label for="orders-per-page">Gösterilen Sipariş:</label>
+                    <select id="orders-per-page">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+                <div class="orders-total-count" id="orders-total-count">
+                    Toplam: 0 sipariş
+                </div>
+            </div>
+            
+            <!-- Sipariş Tablosu -->
+            <div class="orders-table-container">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Sipariş Talep Numarası</th>
+                            <th>Tarih</th>
+                            <th>Sipariş Tutar</th>
+                            <th>Ürün Adedi</th>
+                            <th>Tedarikçi Firma</th>
+                            <th>Sipariş Statüsü</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                        <!-- Siparişler burada listelenecek -->
+                        <tr>
+                            <td colspan="7" class="orders-loading">
+                                <div class="loading-spinner-small"></div> Siparişler yükleniyor...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Sayfalama Kontrolleri -->
+            <div class="orders-pagination" id="orders-pagination">
+                <!-- Sayfalama butonları dinamik olarak eklenecek -->
+            </div>
+        </div>
+        
+        <!-- Sipariş Detay Modalı -->
+        <div id="order-detail-modal" class="order-detail-modal">
+            <div class="order-detail-content">
+                <div class="order-detail-header">
+                    <h3>Sipariş Detayı</h3>
+                    <span class="close-order-detail">&times;</span>
+                </div>
+                <div id="order-detail-body" class="order-detail-body">
+                    <!-- Sipariş detayları burada gösterilecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="profile-authorization-template">
+    <div class="profile-section" id="authorization-section">
+        <div class="authorization-section">
+            <div class="authorization-header">
+                <h3><i class="fas fa-user-shield"></i> Yetkilendirme İşlemleri</h3>
+                <div class="authorization-count" id="user-count">
+                    <i class="fas fa-users"></i> 0/5 Kullanıcı
+                </div>
+            </div>
+            
+            <div class="authorization-buttons">
+                <button class="authorization-add-btn" id="add-user-btn">
+                    <i class="fas fa-user-plus"></i> Yeni Kullanıcı Ekle
+                </button>
+            </div>
+            
+            <div class="user-table-container">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>E-posta</th>
+                            <th>Rol</th>
+                            <th>Durum</th>
+                            <th>Eklenme Tarihi</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table-body">
+                        <!-- Kullanıcılar dinamik olarak buraya yüklenecek -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Kullanıcı Ekleme/Düzenleme Modal -->
+        <div class="user-modal" id="user-modal">
+            <div class="user-modal-content">
+                <div class="user-modal-header">
+                    <h3 id="user-modal-title">Yeni Kullanıcı Ekle</h3>
+                    <button class="user-modal-close" id="close-user-modal">&times;</button>
+                </div>
+                <form class="user-form" id="user-form">
+                    <div class="user-form-group">
+                        <label for="user-name">Ad Soyad</label>
+                        <input type="text" class="user-form-control" id="user-name" placeholder="Kullanıcının adı ve soyadı">
+                        <div class="invalid-feedback" id="user-name-feedback">Ad soyad alanı gereklidir.</div>
+                    </div>
+                    <div class="user-form-group">
+                        <label for="user-email">E-posta</label>
+                        <input type="email" class="user-form-control" id="user-email" placeholder="kullanici@firma.com">
+                        <div class="invalid-feedback" id="user-email-feedback">Geçerli bir e-posta adresi giriniz.</div>
+                    </div>
+                    <div class="user-form-group">
+                        <label for="user-position">Pozisyon / Görev</label>
+                        <input type="text" class="user-form-control" id="user-position" placeholder="Örn: Satış Müdürü, Muhasebe Uzmanı">
+                        <div class="invalid-feedback" id="user-position-feedback">Pozisyon alanı gereklidir.</div>
+                    </div>
+                    <div class="user-form-group">
+                        <label for="user-role">Kullanıcı Rolü</label>
+                        <select class="user-form-select" id="user-role">
+                            <option value="admin">Yönetici (Tam Erişim)</option>
+                            <option value="editor">Düzenleyici (Kısıtlı Erişim)</option>
+                            <option value="viewer">Görüntüleyici (Salt Okunur)</option>
+                        </select>
+                    </div>
+                    <div class="user-form-group">
+                        <label for="user-status">Kullanıcı Durumu</label>
+                        <select class="user-form-select" id="user-status">
+                            <option value="active">Aktif</option>
+                            <option value="inactive">Pasif</option>
+                            <option value="pending">Beklemede</option>
+                        </select>
+                    </div>
+                    
+                    <div class="permission-section">
+                        <div class="permission-header">Erişim İzinleri</div>
+                        <div class="permission-grid">
+                            <div class="permission-item">
+                                <input type="checkbox" id="perm-users" class="permission-checkbox">
+                                <label for="perm-users" class="permission-label">Kullanıcı Yönetimi</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" id="perm-orders" class="permission-checkbox">
+                                <label for="perm-orders" class="permission-label">Sipariş Yönetimi</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" id="perm-products" class="permission-checkbox">
+                                <label for="perm-products" class="permission-label">Ürün Yönetimi</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" id="perm-messages" class="permission-checkbox">
+                                <label for="perm-messages" class="permission-label">Mesajlaşma</label>
+                            </div>
+                            <div class="permission-item">
+                                <input type="checkbox" id="perm-reports" class="permission-checkbox">
+                                <label for="perm-reports" class="permission-label">Raporlar</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-modal-footer">
+                        <button type="button" class="user-modal-btn user-modal-btn-cancel" id="cancel-user-btn">İptal</button>
+                        <button type="submit" class="user-modal-btn user-modal-btn-save" id="save-user-btn">Kullanıcı Ekle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Silme Onay Modal -->
+        <div class="confirm-modal" id="confirm-modal">
+            <div class="confirm-modal-content">
+                <div class="confirm-modal-header">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Kullanıcıyı Sil</h3>
+                </div>
+                <div class="confirm-modal-body">
+                    <p id="confirm-message">Bu kullanıcıyı silmek istediğinize emin misiniz?</p>
+                </div>
+                <div class="confirm-modal-footer">
+                    <button class="confirm-modal-btn confirm-modal-btn-cancel" id="cancel-delete-btn">İptal</button>
+                    <button class="confirm-modal-btn confirm-modal-btn-confirm" id="confirm-delete-btn">Sil</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="profile-faq-template">
+    <div class="profile-section" id="faq-section">
+        <h2>Sık Sorulan Bölümler</h2>
+        <div class="faq-search">
+             <input type="search" id="faq-search-input" placeholder="Sorunuzu arayın...">
+             <button type="button" id="faq-search-btn">Ara</button>
+        </div>
+        <div id="faq-content">
+            <!-- SSS içerikleri buraya gelecek -->
+            <p>Sık sorulan sorular bölümü yakında eklenecektir.</p>
+        </div>
+    </div>
+</template>
+
+<template id="profile-password-template">
+    <div class="profile-section" id="password-section">
+        <h2>Şifre İşlemleri</h2>
+        <div class="password-operations">
+            <!-- Şifre Değiştirme Formu -->
+            <div class="password-change-form">
+                <h3>Şifre Değiştir</h3>
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label for="current-password">Mevcut Şifre:</label>
+                        <input type="password" id="current-password" name="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">Yeni Şifre:</label>
+                        <input type="password" id="new-password" name="newPassword" required>
+                        <div class="password-strength-meter">
+                            <div class="strength-bar"></div>
+                        </div>
+                        <div class="password-requirements">
+                            <p>Şifreniz şunları içermelidir:</p>
+                            <ul>
+                                <li data-requirement="length">En az 8 karakter</li>
+                                <li data-requirement="uppercase">En az 1 büyük harf</li>
+                                <li data-requirement="lowercase">En az 1 küçük harf</li>
+                                <li data-requirement="number">En az 1 rakam</li>
+                                <li data-requirement="special">En az 1 özel karakter</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Yeni Şifre (Tekrar):</label>
+                        <input type="password" id="confirm-password" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Şifreyi Güncelle</button>
+                </form>
+            </div>
+
+            <!-- Şifre Sıfırlama Bölümü -->
+            <div class="password-reset-section">
+                <h3>Şifremi Unuttum</h3>
+                <p>Şifrenizi unuttuysanız, aşağıdaki yöntemlerden birini kullanarak sıfırlayabilirsiniz:</p>
+                <div class="reset-options">
+                    <div class="reset-option">
+                        <h4>E-posta ile Sıfırlama</h4>
+                        <form id="email-reset-form">
+                            <div class="form-group">
+                                <label for="reset-email">E-posta Adresiniz:</label>
+                                <input type="email" id="reset-email" name="email" required>
+                            </div>
+                            <button type="submit" class="btn-secondary">E-posta Gönder</button>
+                        </form>
+                    </div>
+                    <div class="reset-option">
+                        <h4>SMS ile Sıfırlama</h4>
+                        <form id="sms-reset-form">
+                            <div class="form-group">
+                                <label for="reset-phone">Telefon Numaranız:</label>
+                                <input type="tel" id="reset-phone" name="phone" required>
+                            </div>
+                            <button type="submit" class="btn-secondary">SMS Gönder</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template> 

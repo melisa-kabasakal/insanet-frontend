@@ -1,0 +1,33 @@
+<!-- Tedarikçiler Sayfası -->
+<div class="page-container suppliers-page">
+    <h1 class="page-title">Onaylı Tedarikçiler</h1>
+    <p class="page-description">Platformumuzdaki güvenilir ve onaylanmış tedarikçileri keşfedin.</p>
+
+    <!-- Arama ve Filtreleme -->
+    <div class="suppliers-controls">
+        <div class="search-bar">
+            <input type="text" id="supplierSearchInput" placeholder="Tedarikçi adı veya anahtar kelime ile ara...">
+            <button id="supplierSearchButton" title="Ara"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="filter-options">
+            <select id="supplierSortFilter">
+                <option value="rating_desc">Puana Göre (Yüksekten Düşüğe)</option>
+                <option value="rating_asc">Puana Göre (Düşükten Yükseğe)</option>
+                <option value="name_asc">Ada Göre (A-Z)</option>
+                <option value="name_desc">Ada Göre (Z-A)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Tedarikçi Listesi -->
+    <div class="supplier-list" id="supplierListContainer">
+        <!-- Tedarikçi kartları dinamik olarak buraya yüklenecek -->
+        <p class="loading-suppliers">Tedarikçiler yükleniyor...</p> 
+    </div>
+
+    <!-- Sayfalama (Gerekirse eklenebilir) -->
+    <!-- <div class="pagination" id="supplierPagination"></div> -->
+</div>
+
+<!-- Bu sayfaya özel scriptler (varsa) -->
+<!-- <script src="js/suppliers.js"></script> --> 
