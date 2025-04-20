@@ -1,5 +1,9 @@
 // js/forgot-password.js - Şifremi Unuttum sayfası için istemci taraflı mantık
 
+// Global değişkenler
+let currentIdentifier = '';
+let currentMethod = 'email';
+
 // Router'dan önce çağrılabilir, bu yüzden global scope'da tanımlıyoruz.
 window.initializeForgotPasswordPage = function() {
     console.log("Initializing forgot password page...");
@@ -166,8 +170,10 @@ window.initializeForgotPasswordPage = function() {
             showLoadingButton(sendCodeBtn);
 
             try {
-                // API çağrısı (artık identifier'ı doğrudan gönderiyoruz)
-                const response = await apiService.requestPasswordResetCode(identifier);
+                // Seçilen metoda göre doğru API metodunu çağır
+                const response = await (currentMethod === 'email' 
+                    ? apiService.requestPasswordResetEmail(identifier)
+                    : apiService.requestPasswordResetSMS(identifier));
                 if (response.success) {
                     goToStep2(response.message); // Adım 2'ye geç ve API'den gelen mesajı göster
                 } else {
@@ -177,6 +183,7 @@ window.initializeForgotPasswordPage = function() {
             } catch (error) {
                 console.error("Error requesting reset code:", error);
                 // Yakalanan hatayı göster
+                showFeedback(error.message || "Kod gönderilirken bir hata oluştu.");
                 showFeedback(error.message || "Doğrulama kodu gönderilirken bir hata oluştu. Ağ bağlantınızı kontrol edin.");
             } finally {
                 hideLoadingButton(sendCodeBtn);
@@ -229,7 +236,7 @@ window.initializeForgotPasswordPage = function() {
 
             showLoadingButton(resetPasswordBtn);
             try {
-                const response = await apiService.resetPassword(currentIdentifier, resetCode, newPassword);
+                const response = await apiService.resetPassword(resetCode, newPassword, currentIdentifier);
                 if (response.success) {
                     showFeedback(response.message, false); // Başarı mesajı
                     alert(response.message); // Ek olarak alert göster (kullanıcı görmesi için)

@@ -284,7 +284,7 @@
                 </div>
 
                 <!-- Şifre Alanları -->
-                <div class="password-section">
+                <div class="password-section" style="display: none;">
                     <div class="form-group">
                         <label for="password">Şifre</label>
                         <input type="password" id="password" name="password" required 
@@ -405,6 +405,8 @@
                     verifiedPhone = phone;
                     showMessage('Telefon doğrulaması başarılı', 'success');
                     console.log('Phone verified:', verifiedPhone);
+                    document.querySelector('.password-section').style.display = 'block';
+                    document.getElementById('password').focus();
                 } else {
                     throw new Error(data.message || 'Doğrulama başarısız');
                 }
@@ -466,6 +468,8 @@
                 if (response.ok) {
                     verifiedEmail = email;
                     showMessage('E-posta doğrulaması başarılı', 'success');
+                    document.querySelector('.password-section').style.display = 'block';
+                    document.getElementById('password').focus();
                 } else {
                     throw new Error(data.message || 'Doğrulama başarısız');
                 }

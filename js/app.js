@@ -637,12 +637,20 @@ async function loadCategories() {
 // Aktif ihaleleri yükle
 async function loadActiveAuctions() {
     try {
-        const auctions = await apiService.getAuctions('active');
+        const response = await apiService.getAuctions('active');
         const auctionList = document.querySelector('.auctionList');
         
         if (!auctionList) return;
         
         auctionList.innerHTML = '';
+        
+        // API yanıtından ihaleleri al
+        const auctions = response.auctions || [];
+        
+        if (!Array.isArray(auctions)) {
+            console.error('İhaleler bir dizi değil:', auctions);
+            return;
+        }
         
         auctions.forEach(auction => {
             const auctionItem = document.createElement('a');

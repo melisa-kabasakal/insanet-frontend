@@ -1,5 +1,5 @@
 // apiService.js - API ile iletişim için servis
-const API_BASE_URL = 'https://api.insanet.com/v1'; // Gerçek API kullanıma hazır olduğunda değiştirilecek
+const API_BASE_URL = 'http://localhost:8082/insanet'; // Backend API URL
 
 class ApiService {
     constructor()  {
@@ -613,10 +613,20 @@ class ApiService {
 
     // Kullanıcı işlemleri
     async login(email, password) {
-        return this.fetchWithAuth('/auth/login', {
+        const response = await fetch(`${this.baseUrl}/auth/login`, {
             method: 'POST',
-            body: JSON.stringify({ email, password })
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ emailOrPhone: email, password })
         });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Giriş başarısız');
+        }
+
+        return response.json();
     }
 
     async register(userData) {
@@ -1652,31 +1662,9 @@ class ApiService {
         if (this.token) {
             try {
                 console.log("Fetching user profile from API...");
-                // GERÇEK API ENTEGRASYONU:
-                // const profile = await this.fetchWithAuth('/profile'); 
-                // localStorage.setItem('userInfo', JSON.stringify(profile));
-                // return { ...profile, isLoggedIn: true };
-
-                // ---- MOCK API YANITI (Geçici) ----
-                // Bu kısmı gerçek API entegrasyonu ile değiştirin
-                const mockProfile = {
-                    id: 1,
-                    name: 'Ahmet Yılmaz',
-                    username: 'ahmet.yilmaz',
-                    email: 'ahmet@yilmazinsaat.com',
-                    phone: '5301234567',
-                    userType: 'contractor', // Kullanıcı tipi
-                    role: 'contractor', // API ile eşleşen rol değeri (siparişlerim menüsü kontrolü için)
-                    position: 'Proje Müdürü', // Pozisyon/Görev bilgisi
-                    companyName: 'Yılmaz İnşaat',
-                    companyFullName: 'Yılmaz İnşaat ve Taahhüt A.Ş.',
-                    taxId: '1234567890',
-                    profilePictureUrl: 'img/default-avatar.png',
-                    // Diğer müteahhit bilgileri...
-                };
-                localStorage.setItem('userInfo', JSON.stringify(mockProfile)); // Mock veriyi sakla
-                return { ...mockProfile, isLoggedIn: true };
-                // ---- MOCK API YANITI SONU ----
+                const profile = await this.fetchWithAuth('/profile'); 
+                localStorage.setItem('userInfo', JSON.stringify(profile));
+                return { ...profile, isLoggedIn: true };
 
             } catch (error) {
                 console.error("Error fetching user profile from API:", error);
@@ -1824,10 +1812,20 @@ class ApiService {
                 }
             }
             
-            return await this.fetchWithAuth('/auth/reset-password/email', {
+            const response = await fetch(`${this.baseUrl}/auth/forgot-password`, {
                 method: 'POST',
-                body: JSON.stringify({ email })
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ emailOrPhone: email })
             });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Şifre sıfırlama e-postası gönderilemedi');
+            }
+
+            return response.json();
         } catch (error) {
             console.error('Error requesting password reset email:', error);
             throw error;
@@ -1855,10 +1853,20 @@ class ApiService {
                 }
             }
             
-            return await this.fetchWithAuth('/auth/reset-password/sms', {
+            const response = await fetch(`${this.baseUrl}/auth/forgot-password`, {
                 method: 'POST',
-                body: JSON.stringify({ phone })
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ emailOrPhone: phone })
             });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Şifre sıfırlama SMS\'i gönderilemedi');
+            }
+
+            return response.json();
         } catch (error) {
             console.error('Error requesting password reset SMS:', error);
             throw error;
@@ -2510,6 +2518,84 @@ class ApiService {
             // ---- MOCK API YANITI SONU ----
         } catch (error) {
             console.error("Error deleting file:", error);
+            throw error;
+        }
+    }
+
+    async requestPasswordResetEmail(email) {
+        try {
+            const response = await fetch(`${this.baseUrl}/auth/forgot-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ emailOrPhone: email })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                // Özel hata durumlarını kontrol et
+                if (error.message && error.message.includes('Query did not return a unique result')) {
+                    throw new Error('Bu e-posta adresi birden fazla hesapta kayıtlı. Lütfen yönetici ile iletişime geçin.');
+                }
+                throw new Error(error.message || 'Şifre sıfırlama e-postası gönderilemedi');
+            }
+
+            return response.json();
+        } catch (error) {
+            console.error('Error requesting password reset email:', error);
+            throw error;
+        }
+    }
+
+    async requestPasswordResetSMS(phone) {
+        try {
+            const response = await fetch(`${this.baseUrl}/auth/forgot-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ phone })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                // Özel hata durumlarını kontrol et
+                if (error.message && error.message.includes('Query did not return a unique result')) {
+                    throw new Error('Bu telefon numarası birden fazla hesapta kayıtlı. Lütfen yönetici ile iletişime geçin.');
+                }
+                throw new Error(error.message || 'Şifre sıfırlama SMS\'i gönderilemedi');
+            }
+
+            return response.json();
+        } catch (error) {
+            console.error('Error requesting password reset SMS:', error);
+            throw error;
+        }
+    }
+
+    async resetPassword(token, newPassword, emailOrPhone) {
+        try {
+            const response = await fetch(`${this.baseUrl}/auth/reset-password`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    token,
+                    newPassword,
+                    emailOrPhone
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Şifre sıfırlama başarısız');
+            }
+
+            return response.json();
+        } catch (error) {
+            console.error('Error resetting password:', error);
             throw error;
         }
     }

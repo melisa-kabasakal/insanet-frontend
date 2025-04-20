@@ -16,6 +16,11 @@ class Router {
             
             // İlk yönlendirmeyi yap
             this.handleRouteChange();
+            
+            // Profile.js'i yükle
+            const profileScript = document.createElement('script');
+            profileScript.src = '/js/profile.js';
+            document.head.appendChild(profileScript);
         });
     }
     
@@ -104,18 +109,12 @@ class Router {
         if (originalPath.startsWith('/profile')) {
             // Kullanıcı bilgilerini al (getUserProfile kullan)
             const userInfo = await apiService.getUserProfile(); 
+            console.log('Profile access check - User info:', userInfo);
             
-            // Kullanıcı giriş yapmamışsa veya tipi 'contractor' değilse login'e yönlendir
-            if (!userInfo || !userInfo.isLoggedIn || userInfo.userType !== 'contractor') {
+            // Kullanıcı giriş yapmamışsa login'e yönlendir
+            if (!userInfo || !userInfo.isLoggedIn) {
                 console.warn('Yetkisiz erişim denemesi: /profile');
-                // Kullanıcı giriş yapmamışsa login'e yönlendir
-                if (!userInfo || !userInfo.isLoggedIn) {
-                    this.navigateTo('/login'); 
-                } else {
-                    // Giriş yapmış ama müteahhit değilse ana sayfaya yönlendir
-                    alert("Bu sayfaya erişim yetkiniz bulunmamaktadır.");
-                    this.navigateTo('/'); 
-                }
+                this.navigateTo('/login');
                 return; // İşlemi durdur
             }
         }
