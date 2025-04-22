@@ -4,33 +4,45 @@
 const pageInitializers = {};
 
 // Sayfa yüklendiğinde çalışacak ana fonksiyon
-document.addEventListener("DOMContentLoaded", function () {
-    // Router'a rotaları tanımla
-    initializeRoutes();
-    
-    // Arama işlevselliğini başlat
-    initializeSearch();
-    
-    // Oturum kontrolü yap
-    checkSession();
-    
-    // Menü öğelerine tıklama işlevselliği ekle
-    initializeMenuItems();
-    
-    // Kayıt ol modal penceresini başlat (Sadece bir kez çağrılacak)
-    initializeRegisterModal();
-    
-    // Sayfanın her yüklenmesinde/değişiminde "İhale Oluştur" butonunun görünürlüğünü kontrol et
-    checkAuctionCreateButton();
-    
-    // Hash değişiminde de kontrol et
-    window.addEventListener('hashchange', function() {
-        setTimeout(checkAuctionCreateButton, 300);
-    });
+document.addEventListener("DOMContentLoaded", async function () {
+    try {
+        // Router'a rotaları tanımla
+        initializeRoutes();
+        
+        // Arama işlevselliğini başlat
+        initializeSearch();
+        
+        // Oturum kontrolü yap ve sonucunu bekle
+        const isLoggedIn = await checkSession();
+        console.log('Oturum durumu:', isLoggedIn ? 'Giriş yapılmış' : 'Giriş yapılmamış');
+        
+        // Menü öğelerine tıklama işlevselliği ekle
+        initializeMenuItems();
+        
+        // Kayıt ol modal penceresini başlat
+        initializeRegisterModal();
+        
+        // İhale Oluştur butonunun görünürlüğünü kontrol et
+        checkAuctionCreateButton();
+        
+        // Hash değişiminde oturum ve buton kontrolü yap
+        window.addEventListener('hashchange', async function() {
+            await checkSession();
+            checkAuctionCreateButton();
+        });
+    } catch (error) {
+        console.error('Sayfa başlatma hatası:', error);
+        showLoggedOutUI();
+    }
 });
 
 // Router rotalarını tanımla
 function initializeRoutes() {
+    // Her sayfa yüklemesinde oturum kontrolü yap
+    router.beforeLoad = async () => {
+        await checkSession();
+    };
+
     // Ana sayfa
     router.addRoute('/', 'home', 'İnşanet: Dijital İnşaat Malzemeleri İhale Platformu');
     
@@ -502,80 +514,99 @@ function initializeSearch() {
     }
 }
 
-// Oturum kontrolü
-async function checkSession() {
-    const token = localStorage.getItem('token');
+// Kullanıcı arayüzünü güncelle (giriş yapılmış durum)
+function showLoggedInUI() {
     const userSignBox = document.querySelector('.user-signBox');
+    if (userSignBox) {
+        userSignBox.innerHTML = `
+            <a href="#/profile" class="btn-login" id="profileButton">Profilim</a>
+            <a href="javascript:void(0)" class="btn-login" id="logoutButton">Çıkış yap</a>
+        `;
+    }
     
-    if (!userSignBox) return;
-    
-    if (token) {
-        try {
-            const userInfo = await apiService.getUserProfile(); 
-
-            if (userInfo && userInfo.isLoggedIn) {
-                let userInfoHTML = '';
-                let profileLinkHTML = '';
-
-                // Tüm giriş yapmış kullanıcılar için firma/isim/rol göster
-                userInfoHTML = `
-                    <div class="user-info-header">
-                        <span class="company-name" title="${userInfo.companyName || 'Firma Adı Yok'}">${userInfo.companyName || 'Firma Adı Yok'}</span>
-                        <div class="user-details">
-                            <span class="user-name" title="${userInfo.name || 'Kullanıcı'}">${userInfo.name || 'Kullanıcı'}</span>
-                            <span class="user-role">(${userInfo.role || 'Yetkili'})</span>
-                        </div>
-                    </div>
-                `;
-                
-                // Sadece müteahhitler için profil linki
-                if (userInfo.userType === 'contractor') {
-                    profileLinkHTML = `<a href="#/profile" class="btn-profile" title="Profilim">Profilim</a>`;
-                }
-
-                userSignBox.innerHTML = `
-                    ${userInfoHTML}
-                    ${profileLinkHTML}
-                    <button type="button" class="btn-logout" id="logoutButtonHeader" title="Çıkış Yap">Çıkış Yap</button>
-                `;
-
-                // Çıkış yapma işlevselliği
-                const logoutButton = document.getElementById('logoutButtonHeader');
-                if (logoutButton) {
-                    logoutButton.addEventListener('click', () => {
-                        apiService.logout();
-                        window.location.hash = '#/'; 
-                        window.location.reload();
-                    });
-                }
-
-            } else {
-                console.warn("Geçersiz veya süresi dolmuş oturum, çıkış yapılıyor.");
-                if (localStorage.getItem('token')) { 
-                     apiService.logout(); 
-                }
-                showLoggedOutUI(userSignBox);
-            }
-        } catch (error) {
-            console.error("Oturum kontrolü sırasında hata:", error);
-            if (localStorage.getItem('token')) { 
-                 apiService.logout();
-            }
-            showLoggedOutUI(userSignBox);
-        }
-    } else {
-        showLoggedOutUI(userSignBox);
+    // İhale Oluştur butonunu göster (eğer ihaleler sayfasındaysa)
+    const createAuctionBtn = document.getElementById('createAuctionButtonContainer');
+    if (createAuctionBtn && window.location.hash.includes('/auctions')) {
+        createAuctionBtn.style.display = 'block';
     }
 }
 
-// Giriş yapılmamış kullanıcı arayüzünü gösteren yardımcı fonksiyon
-function showLoggedOutUI(userSignBox) {
-    userSignBox.innerHTML = `
-        <a href="#/login" class="btn-login">Giriş Yap</a>
-        <button type="button" class="btn-register" id="showRegisterModal">Kayıt Ol</button>
-    `;
+// Oturum kontrolü
+async function checkSession() {
+    try {
+        const token = localStorage.getItem('auth_token');
+        const userSignBox = document.querySelector('.user-signBox');
+        
+        if (!userSignBox) {
+            console.error('userSignBox elementi bulunamadı');
+            return false;
+        }
+
+        if (!token) {
+            console.log('Token bulunamadı');
+            showLoggedOutUI();
+            return false;
+        }
+
+        // Token geçerliliğini kontrol et
+        const isValid = await apiService.validateToken();
+        
+        if (!isValid) {
+            localStorage.removeItem('auth_token');
+            throw new Error('Token geçersiz');
+        }
+
+        // Giriş yapılmış UI'ı göster
+        showLoggedInUI();
+
+        // Çıkış yap butonu tıklama olayı
+        const logoutBtn = document.getElementById('logoutButton');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async () => {
+                try {
+                    await apiService.logout();
+                    localStorage.removeItem('auth_token');
+                    showLoggedOutUI();
+                    window.location.href = '#/'; // Ana sayfaya yönlendir
+                } catch (error) {
+                    console.error('Çıkış hatası:', error);
+                }
+            });
+        }
+
+        // Profile button click handler
+        const profileBtn = document.getElementById('profileButton');
+        if (profileBtn) {
+            profileBtn.addEventListener('click', () => {
+                window.location.href = '#/profile';
+            });
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Oturum kontrolü hatası:', error);
+        localStorage.removeItem('token');
+        showLoggedOutUI();
+        return false;
+    }
 }
 
+// Kullanıcı arayüzünü güncelle (giriş yapılmamış durum)
+function showLoggedOutUI() {
+    const userSignBox = document.querySelector('.user-signBox');
+    if (userSignBox) {
+        userSignBox.innerHTML = `
+            <a href="#/login" class="btn-login">Giriş Yap</a>
+            <button type="button" class="btn-register" id="showRegisterModal">Kayıt Ol</button>
+        `;
+    }
+    
+    // İhale Oluştur butonunu gizle
+    const createAuctionBtn = document.getElementById('createAuctionButtonContainer');
+    if (createAuctionBtn) {
+        createAuctionBtn.style.display = 'none';
+    }
+}
 // Menü öğelerine tıklama işlevselliği
 function initializeMenuItems() {
     // Tüm menü öğelerini seç
@@ -603,9 +634,12 @@ function initializeMenuItems() {
 }
 
 // Sayfa içeriği yüklendiğinde çalışacak fonksiyonlar
-function loadHomePage() {
-    loadCategories();
-    loadActiveAuctions();
+async function loadHomePage() {
+    // Sadece giriş yapılmışsa kategorileri ve ihaleleri yükle
+    if (apiService.token) {
+        await loadCategories();
+        await loadActiveAuctions();
+    }
 }
 
 // Kategorileri yükle
@@ -637,20 +671,12 @@ async function loadCategories() {
 // Aktif ihaleleri yükle
 async function loadActiveAuctions() {
     try {
-        const response = await apiService.getAuctions('active');
+        const auctions = await apiService.getAuctions('active');
         const auctionList = document.querySelector('.auctionList');
         
         if (!auctionList) return;
         
         auctionList.innerHTML = '';
-        
-        // API yanıtından ihaleleri al
-        const auctions = response.auctions || [];
-        
-        if (!Array.isArray(auctions)) {
-            console.error('İhaleler bir dizi değil:', auctions);
-            return;
-        }
         
         auctions.forEach(auction => {
             const auctionItem = document.createElement('a');
@@ -696,6 +722,8 @@ function addHoverEffect(elements) {
 window.loadHomePage = loadHomePage;
 window.loadCategories = loadCategories;
 window.loadActiveAuctions = loadActiveAuctions;
+window.showLoggedInUI = showLoggedInUI;
+window.showLoggedOutUI = showLoggedOutUI;
 
 // Kayıt ol modalını başlat
 function initializeRegisterModal() {

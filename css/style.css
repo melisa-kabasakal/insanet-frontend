@@ -300,13 +300,15 @@ header {
     flex: 1;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 10px;
 }
 
 .user-signBox .btn-login,
-.user-signBox .btn-register,
-.user-signBox .btn-profile,
-.user-signBox .btn-logout {
+.user-signBox .btn-register {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--primary-color);
     color: aquamarine;
     border: none;
@@ -314,20 +316,23 @@ header {
     cursor: pointer;
     border-radius: var(--border-radius);
     text-decoration: none;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color var(--transition-speed);
     font-size: 14px;
     font-weight: 500;
     min-width: 100px;
     height: 40px;
+    transition: background-color var(--transition-speed);
 }
 
-.user-signBox button:hover,
-.user-signBox a:hover {
+.user-signBox .btn-login:hover,
+.user-signBox .btn-register:hover {
     background-color: aquamarine;
     color: black;
+}
+
+.auth-buttons .btn-login:hover,
+.auth-buttons .btn-register:hover {
+    background-color: aquamarine;
+    color: black !important;
 }
 
 /* Dropdown Menü */

@@ -1,7 +1,7 @@
 // auctions.js - İhale sayfası işlevselliği
 
 // Global değişkenler
-let selectedProducts = [];
+window.selectedProducts = window.selectedProducts || [];
 let isProductDropdownOpen = false;
 let isLocationDropdownOpen = false;
 let currentTabStatus = 'open'; // Varsayılan olarak açık ihaleler sekmesi aktif
@@ -104,7 +104,7 @@ function setupSearchAndFilters() {
             if (searchInput) searchInput.value = '';
             
             // Ürün filtrelerini sıfırla
-            selectedProducts = [];
+            window.selectedProducts = [];
             updateProductFilterHeader();
             
             // Lokasyon filtrelerini sıfırla (global metod)
@@ -150,7 +150,7 @@ function setupProductFilter() {
     }
 
     function applyLocalProductFilter() {
-        console.log('Seçilen Ürünler (Uygula):', selectedProducts);
+        console.log('Seçilen Ürünler (Uygula):', window.selectedProducts);
         isProductDropdownOpen = false; 
         productFilterDropdown.classList.remove('open');
         filterAuctions(); // Ana filtrelemeyi tetikle
@@ -175,7 +175,7 @@ function setupProductFilter() {
             checkbox.type = 'checkbox';
             checkbox.value = product;
             checkbox.id = `product-${product.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`; 
-            checkbox.checked = selectedProducts.includes(product);
+            checkbox.checked = window.selectedProducts.includes(product);
             
             const label = document.createElement('label');
             label.htmlFor = checkbox.id;
@@ -188,11 +188,11 @@ function setupProductFilter() {
             checkbox.addEventListener('change', (event) => {
                 const currentProduct = event.target.value;
                 if (event.target.checked) {
-                    if (!selectedProducts.includes(currentProduct)) {
-                        selectedProducts.push(currentProduct);
+                    if (!window.selectedProducts.includes(currentProduct)) {
+                        window.selectedProducts.push(currentProduct);
                     }
                 } else {
-                    selectedProducts = selectedProducts.filter(p => p !== currentProduct);
+                    window.selectedProducts = window.selectedProducts.filter(p => p !== currentProduct);
                 }
                 updateProductFilterHeader();
             });
@@ -224,7 +224,7 @@ function setupProductFilter() {
     selectAllProductsButton.addEventListener('click', () => {
         const currentFilter = productSearchInput.value.toLowerCase();
         const filtered = allProducts.filter(p => p.toLowerCase().includes(currentFilter));
-        selectedProducts = [...new Set([...selectedProducts, ...filtered])]; 
+        window.selectedProducts = [...new Set([...window.selectedProducts, ...filtered])]; 
         renderProductOptions(productOptionsContainer, productSearchInput, currentFilter); 
         updateProductFilterHeader();
     });
@@ -232,7 +232,7 @@ function setupProductFilter() {
     clearAllProductsButton.addEventListener('click', () => {
         const currentFilter = productSearchInput.value.toLowerCase();
         const filtered = allProducts.filter(p => p.toLowerCase().includes(currentFilter));
-        selectedProducts = selectedProducts.filter(p => !filtered.includes(p));
+        window.selectedProducts = window.selectedProducts.filter(p => !filtered.includes(p));
         renderProductOptions(productOptionsContainer, productSearchInput, currentFilter);
         updateProductFilterHeader();
     });
@@ -254,7 +254,7 @@ function updateProductFilterHeader() {
     
     if (!placeholder || !selectedCountSpan) return;
 
-    const count = selectedProducts.length;
+    const count = window.selectedProducts.length;
     if (count === 0) {
         placeholder.textContent = 'Tüm Ürünler'; 
         placeholder.style.display = 'inline';
@@ -426,7 +426,7 @@ function filterAuctions() {
     const searchTerm = document.getElementById('auction-search')?.value.toLowerCase() || '';
     const sortValue = document.getElementById('filterSort')?.value || 'newest';
     
-    const selectedProductValues = selectedProducts; 
+    const selectedProductValues = window.selectedProducts; 
     const selectedLocationValues = typeof window.getSelectedLocations === 'function' ? 
                                  window.getSelectedLocations() : [];
     
@@ -1059,113 +1059,92 @@ function debounce(func, delay) {
 async function checkCreateAuctionButton() {
     // Test amacıyla doğrudan butonu göster
     console.log('İhale Oluştur butonu kontrolü yapılıyor...');
-    const createAuctionBtn = document.getElementById('createAuctionButtonContainer');
+    const createAuctionBtnContainer = document.getElementById('createAuctionButtonContainer');
+    const createAuctionBtn = document.getElementById('createAuctionButton');
     
-    // Element var mı kontrol et
-    if (!createAuctionBtn) {
-        console.error('createAuctionButtonContainer elementi bulunamadı!');
+    // Elementler var mı kontrol et
+    if (!createAuctionBtnContainer || !createAuctionBtn) {
+        console.error('createAuctionButton elementleri bulunamadı!');
         return;
     }
     
     try {
         // Test için kullanıcının her zaman giriş yapmış olduğunu varsayalım
-        // Bu satırı daha sonra kaldırabilirsiniz
-        createAuctionBtn.style.display = 'block';
+        createAuctionBtnContainer.style.display = 'block';
         
-        // Gerçek kontrol (geçici olarak yorum satırı yapıyoruz)
-        /*
-        // Kullanıcı bilgilerini kontrol et (apiService kullanarak)
-        const userInfo = await apiService.getUserProfile();
+        // Tıklama olayını ekle
+        createAuctionBtn.removeEventListener('click', openCreateAuctionForm); // Önceki event listener'ı kaldır
+        createAuctionBtn.addEventListener('click', openCreateAuctionForm);
+        console.log('İhale Oluştur butonuna event listener eklendi.');
         
-        console.log('Kullanıcı bilgileri yüklendi:', userInfo);
-        
-        if (userInfo && userInfo.isLoggedIn) {
-            // Kullanıcı giriş yapmışsa butonu göster
-            createAuctionBtn.style.display = 'block';
+        /* Gerçek kontrol (daha sonra etkinleştirilecek)
+        try {
+            const userInfo = await apiService.getUserProfile();
+            console.log('Kullanıcı bilgileri yüklendi:', userInfo);
             
-            // Butona tıklama olayını ekle
-            const button = document.getElementById('createAuctionButton');
-            if (button) {
-                // Önce eski event listener'ı kaldır (birden fazla eklenmemesi için)
-                button.removeEventListener('click', openCreateAuctionForm);
-                // Yeni event listener ekle
-                button.addEventListener('click', openCreateAuctionForm);
+            if (userInfo && userInfo.isLoggedIn) {
+                createAuctionBtnContainer.style.display = 'block';
+                createAuctionBtn.removeEventListener('click', openCreateAuctionForm);
+                createAuctionBtn.addEventListener('click', openCreateAuctionForm);
+                console.log('İhale Oluştur butonuna event listener eklendi.');
+            } else {
+                createAuctionBtnContainer.style.display = 'none';
+                console.log('Kullanıcı giriş yapmadığı için buton gizlendi.');
             }
-        } else {
-            // Giriş yapmamışsa butonu gizle
-            createAuctionBtn.style.display = 'none';
-            console.log('Kullanıcı giriş yapmamış, "İhale Oluştur" butonu gizleniyor');
+        } catch (error) {
+            console.error('Kullanıcı bilgileri alınırken hata:', error);
+            createAuctionBtnContainer.style.display = 'none';
         }
         */
-        
-        // Butona tıklama olayını ekle
-        const button = document.getElementById('createAuctionButton');
-        if (button) {
-            // Önce eski event listener'ı kaldır (birden fazla eklenmemesi için)
-            button.removeEventListener('click', openCreateAuctionForm);
-            // Yeni event listener ekle
-            button.addEventListener('click', openCreateAuctionForm);
-            console.log('İhale Oluştur butonuna event listener eklendi.');
-        } else {
-            console.error('createAuctionButton elementi bulunamadı!');
-        }
     } catch (error) {
         console.error('Butonu kontrol ederken hata oluştu:', error);
-        // Hata olsa bile butonu göstermek için:
-        createAuctionBtn.style.display = 'block';
     }
 }
 
 // İhale oluşturma formunu aç
 async function openCreateAuctionForm() {
     try {
-        // Gerekli HTML'i yükle (SPA mantığıyla) - Eğer route yoksa o zaman bu şekilde yapılır
-        const createAuctionHTML = await fetch('components/createAuction.html')
-            .then(response => response.text());
+        // createAuction.html sayfasını yükle
+        const response = await fetch('/components/createAuction.html');
+        if (!response.ok) throw new Error('createAuction.html yüklenemedi');
         
-        // HTML içeriğini sayfaya ekle
-        const auctionsContainer = document.querySelector('.auctions-container');
-        if (auctionsContainer) {
-            // İhale oluşturma formunu ekle (gizli olarak)
-            const formContainer = document.createElement('div');
-            formContainer.id = 'createAuctionFormContainer';
-            formContainer.innerHTML = createAuctionHTML;
-            auctionsContainer.appendChild(formContainer);
+        const html = await response.text();
+        
+        // Mevcut modal varsa kaldır
+        const existingModal = document.querySelector('.create-auction-container');
+        if (existingModal) existingModal.remove();
+        
+        // Yeni modalı ekle
+        document.body.insertAdjacentHTML('beforeend', html);
+        
+        // Form olaylarını ayarla
+        setupCreateAuctionEvents();
+        setupCreateAuctionTabs();
+        await setupMaterialRequestTable();
+        
+        // Modalı göster
+        const modal = document.querySelector('.create-auction-container');
+        if (modal) {
+            modal.style.display = 'block';
             
-            // Formu görünür yap
-            const createAuctionContainer = document.querySelector('.create-auction-container');
-            if (createAuctionContainer) {
-                // Sayfayı yukarı kaydır
-                window.scrollTo(0, 0);
-                
-                // Formu göster (animasyonlu)
-                setTimeout(() => {
-                    createAuctionContainer.classList.add('active');
-                    
-                    // Form olaylarını ekle
-                    setupCreateAuctionEvents();
-                    
-                    // İlk satırdaki talep numarasını otomatik oluştur
-                    const firstRowRequestInput = document.querySelector('#materialRequestTable tbody tr:first-child input[name="request_no"]');
-                    if (firstRowRequestInput) {
-                        const requestNo = generateRequestNumber();
-                        firstRowRequestInput.value = requestNo;
-                        firstRowRequestInput.className = 'auto-generated-field';
-                        firstRowRequestInput.readOnly = true;
-                        console.log('İlk talep numarası oluşturuldu:', requestNo);
-                    } else {
-                        console.error('Talep no alanı bulunamadı');
-                    }
-                }, 100);
-            } else {
-                showNotification('İhale oluşturma formu yüklenemedi.', 'error');
+            // Kapatma butonunu ayarla
+            const closeBtn = modal.querySelector('.create-auction-close');
+            if (closeBtn) {
+                closeBtn.onclick = () => {
+                    modal.style.display = 'none';
+                };
             }
-        } else {
-            showNotification('İhale oluşturma formu yüklenemedi.', 'error');
+            
+            // Modal dışına tıklamayı dinle
+            window.onclick = (event) => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
         }
     } catch (error) {
-        console.error('İhale oluşturma formu yüklenirken hata:', error);
-        showNotification('İhale oluşturma formu yüklenemedi.', 'error');
+        console.error('İhale oluşturma formu açılırken hata:', error);
+        showNotification('İhale oluşturma formu açılamadı', 'error');
     }
 }
 
@@ -1250,7 +1229,7 @@ function setupCreateAuctionTabs() {
 }
 
 // Malzeme Talep Formu tablosunu ayarla
-function setupMaterialRequestTable() {
+async function setupMaterialRequestTable() {
     // Yeni satır ekleme butonu
     const addRowButton = document.getElementById('addMaterialRow');
     if (addRowButton) {
@@ -1261,7 +1240,7 @@ function setupMaterialRequestTable() {
     setupTableRowActions();
 
     // İlk yükleme için talep numarası güncelleme
-    updateInitialRequestNumbers();
+    await updateInitialRequestNumbers();
     
     // Sürükle-bırak sıralama işlevini etkinleştir
     setupDragAndDrop();
@@ -1271,7 +1250,7 @@ function setupMaterialRequestTable() {
 }
 
 // İlk yükleme için talep numaraları güncelleme
-function updateInitialRequestNumbers() {
+async function updateInitialRequestNumbers() {
     console.log('İlk talep numaraları kontrol ediliyor...');
     
     // Tablodaki tüm satırları al
@@ -1290,7 +1269,7 @@ function updateInitialRequestNumbers() {
     // İlk satırda talep numarası boşsa yeni oluştur
     if (firstRowRequestInput && (!firstRowRequestInput.value || firstRowRequestInput.value === firstRowRequestInput.placeholder)) {
         console.log('İlk satır için yeni talep numarası oluşturuluyor...');
-        mainRequestNo = generateRequestNumber();
+        mainRequestNo = await generateRequestNumber();
         firstRowRequestInput.value = mainRequestNo;
         firstRowRequestInput.className = 'auto-generated-field';
         firstRowRequestInput.readOnly = true;
@@ -1299,7 +1278,7 @@ function updateInitialRequestNumbers() {
         mainRequestNo = firstRowRequestInput.value;
     } else {
         // İlk satırda input yoksa (hatalı durum), yeni oluştur
-        mainRequestNo = generateRequestNumber();
+        mainRequestNo = await generateRequestNumber();
     }
     
     // Eğer birden fazla satır varsa, diğer tüm satırlardaki talep numaralarını ilk satır ile aynı yap
@@ -1321,25 +1300,29 @@ function updateInitialRequestNumbers() {
 }
 
 // Malzeme Talep Tablosuna yeni satır ekle
-function addMaterialRequestRow() {
+async function addMaterialRequestRow() {
     const table = document.getElementById('materialRequestTable');
     if (!table) return;
     
     const tbody = table.querySelector('tbody');
     const rowCount = tbody.querySelectorAll('tr').length + 1;
     
-    // İlk satırdaki talep numarasını alıp yeni satırlarda kullan
-    let requestNo;
-    const firstRowRequestInput = document.querySelector('#materialRequestTable tbody tr:first-child input[name="request_no"]');
+    // Her yeni satır için yeni talep numarası oluştur
+    const requestNo = await generateRequestNumber();
+    console.log('Yeni satır için talep numarası oluşturuldu:', requestNo);
     
-    if (firstRowRequestInput && firstRowRequestInput.value) {
-        // İlk satırdan talep numarasını al
-        requestNo = firstRowRequestInput.value;
-        console.log('İlk satırdaki talep numarası yeni satıra uygulanıyor:', requestNo);
-    } else {
-        // İlk satır yoksa veya talep numarası yoksa yeni oluştur
-        requestNo = generateRequestNumber();
-        console.log('Yeni talep numarası oluşturuldu:', requestNo);
+    // Malzeme talebini backend'e kaydet
+    try {
+        const materialRequest = {
+            requestNumber: requestNo,
+            date: getCurrentDate(),
+            status: 'PENDING'
+        };
+        
+        const createdRequest = await apiService.createMaterialRequest(materialRequest);
+        console.log('Malzeme talebi başarıyla kaydedildi:', createdRequest);
+    } catch (error) {
+        console.error('Malzeme talebi kaydedilirken hata oluştu:', error);
     }
     
     // Türkiye illerini al
@@ -1364,7 +1347,9 @@ function addMaterialRequestRow() {
     newRow.innerHTML = `
         <td>${rowCount}</td>
         <td>
-            <input type="text" name="request_no" value="${requestNo}" readonly class="auto-generated-field">
+            <div class="d-flex align-items-center">
+                <span class="material-request-no">${requestNo}</span>
+            </div>
         </td>
         <td>
             <input type="date" name="date" value="${getCurrentDate()}">
@@ -1463,26 +1448,18 @@ function addMaterialRequestRow() {
     expandables.forEach(setupAutoExpandTextarea);
 }
 
-// Tarih bazlı ve sıralı talep numarası oluştur
-function generateRequestNumber() {
-    // Tarih bazlı format (INS-YYYYMMDD-XXX)
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    
-    // Sıralı numara için localStorage'dan son değeri al
-    let lastSerial = localStorage.getItem('lastRequestSerial') || 0;
-    lastSerial = parseInt(lastSerial) + 1;
-    
-    // LocalStorage'a yeni seri numarasını kaydet
-    localStorage.setItem('lastRequestSerial', lastSerial);
-    
-    // Seri numarasını 3 haneli formata getir (001, 002, ...)
-    const serialFormatted = String(lastSerial).padStart(3, '0');
-    
-    // Talep numarasını formatla (INS-20240405-001)
-    return `INS-${year}${month}${day}-${serialFormatted}`;
+// Backend'den talep numarası al
+async function generateRequestNumber() {
+    try {
+        const requestNumber = await apiService.generateRequestNumber();
+        return requestNumber;
+    } catch (error) {
+        console.error('Talep numarası alma hatası:', error);
+        // Hata durumunda yerel olarak oluştur
+        const date = new Date();
+        const timestamp = date.getTime();
+        return `INS-${timestamp}`;
+    }
 }
 
 // Bugünün tarihini YYYY-MM-DD formatında döndür
@@ -2043,6 +2020,53 @@ if (typeof showNotification !== 'function') {
                 notification.remove();
             }, 300);
         }, 3000);
+    }
+}
+
+// İhaleyi yayınla
+async function publishAuction() {
+    try {
+        // Form verilerini topla
+        const materialRequests = collectMaterialRequestData();
+        const auctionSettings = collectAuctionSettingsData();
+        const bidSettings = collectBidSettingsData();
+
+        // Zorunlu alanları kontrol et
+        if (!auctionSettings.auctionTitle) {
+            showNotification('İhale başlığı zorunludur', 'error');
+            return;
+        }
+
+        if (!materialRequests || materialRequests.length === 0) {
+            showNotification('En az bir malzeme talebi eklemelisiniz', 'error');
+            return;
+        }
+
+        // API'ye gönderilecek veriyi hazırla
+        const auctionData = {
+            title: auctionSettings.auctionTitle,
+            description: auctionSettings.auctionDescription,
+            category: auctionSettings.auctionCategory,
+            features: auctionSettings.auctionFeatures,
+            materialRequests: materialRequests,
+            bidSettings: bidSettings
+        };
+
+        // İhaleyi API'ye gönder
+        const response = await apiService.createAuction(auctionData);
+
+        if (response.success) {
+            showNotification('İhale başarıyla yayınlandı', 'success');
+            // İhale listesini güncelle
+            loadAuctions('open');
+            // Formu kapat
+            closeCreateAuctionForm();
+        } else {
+            showNotification(response.message || 'İhale yayınlanırken bir hata oluştu', 'error');
+        }
+    } catch (error) {
+        console.error('İhale yayınlanırken hata:', error);
+        showNotification('İhale yayınlanırken bir hata oluştu', 'error');
     }
 }
 
@@ -2766,6 +2790,79 @@ function setupCreateAuctionEvents() {
         });
     }
     
-    // ... existing code ...
+    // Geri Dön butonu
+    const backBtn = document.getElementById('backButton');
+    if (backBtn) {
+        backBtn.addEventListener('click', function() {
+            closeCreateAuctionForm();
+        });
+    }
 }
-// ... existing code ...
+
+// Ürün detay modalını ayarla
+function setupDetailsModal() {
+    const detailsModal = document.getElementById('productDetailsModal');
+    if (!detailsModal) return;
+
+    // Kapatma butonunu ayarla
+    const closeBtn = detailsModal.querySelector('.close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            detailsModal.style.display = 'none';
+        });
+    }
+
+    // Modal dışına tıklayınca kapat
+    window.addEventListener('click', function(event) {
+        if (event.target === detailsModal) {
+            detailsModal.style.display = 'none';
+        }
+    });
+}
+
+// Malzeme talep tablosunda sürükle-bırak sıralama özelliğini ayarla
+function setupDragAndDrop() {
+    const table = document.getElementById('materialRequestTable');
+    if (!table) return;
+
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+
+    const rows = tbody.getElementsByTagName('tr');
+    
+    Array.from(rows).forEach(row => {
+        // Sürüklenebilir yap
+        row.draggable = true;
+        
+        // Sürükleme başladığında
+        row.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text/plain', Array.from(rows).indexOf(row));
+            row.classList.add('dragging');
+        });
+        
+        // Sürükleme bittiğinde
+        row.addEventListener('dragend', function() {
+            row.classList.remove('dragging');
+        });
+        
+        // Sürüklenen öğe üzerine geldiğinde
+        row.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            const draggingRow = tbody.querySelector('.dragging');
+            if (!draggingRow) return;
+            
+            const siblings = [...tbody.querySelectorAll('tr:not(.dragging)')];
+            const nextSibling = siblings.find(sibling => {
+                const rect = sibling.getBoundingClientRect();
+                const offset = (rect.y + rect.height / 2) - e.clientY;
+                return offset > 0;
+            });
+            
+            if (nextSibling) {
+                tbody.insertBefore(draggingRow, nextSibling);
+            } else {
+                tbody.appendChild(draggingRow);
+            }
+        });
+    });
+}

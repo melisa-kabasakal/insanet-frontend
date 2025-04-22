@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Ürünler</h1>
+        
+        <!-- Ürün listesi -->
+        <div id="productList" class="card-grid">
+            <!-- Ürünler buraya dinamik olarak eklenecek -->
+        </div>
+
+        <!-- Yeni ürün ekleme formu -->
+        <div class="card">
+            <h2>Yeni Ürün Ekle</h2>
+            <form id="newProductForm">
+                <div class="form-group">
+                    <label for="name">Ürün Adı:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Açıklama:</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="price">Fiyat:</label>
+                    <input type="number" id="price" name="price" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Kategori:</label>
+                    <input type="text" id="category" name="category" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Ürün Ekle</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/apiService.js"></script>
+    <script>
+        // ApiService instance'ı oluştur
+        const api = new ApiService('http://localhost:8082/insanet');
+
+        // Ürünleri listele
+        async function loadProducts() {
+            try {
+                const products = await api.getProducts();
+                const productList = document.getElementById('productList');
+                productList.innerHTML = ''; // Listeyi temizle
+
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <p>Fiyat: ${product.price} TL</p>
+                        <p>Kategori: ${product.category}</p>
+                        <div class="button-group">
+                            <button onclick="editProduct(${product.id})" class="btn btn-secondary">Düzenle</button>
+                            <button onclick="deleteProduct(${product.id})" class="btn btn-danger">Sil</button>
+                        </div>
+                    `;
+                    productList.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Ürünler yüklenirken hata:', error);
+                alert('Ürünler yüklenemedi!');
+            }
+        }
+
+        // Yeni ürün oluştur
+        document.getElementById('newProductForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                price: Number(document.getElementById('price').value),
+                category: document.getElementById('category').value
+            };
+
+            try {
+                await api.createProduct(formData);
+                alert('Ürün başarıyla eklendi!');
+                loadProducts(); // Listeyi yenile
+                e.target.reset(); // Formu temizle
+            } catch (error) {
+                console.error('Ürün eklenirken hata:', error);
+                alert('Ürün eklenemedi!');
+            }
+        });
+
+        // Ürün düzenle
+        async function editProduct(productId) {
+            try {
+                const product = await api.getProductById(productId);
+                const newName = prompt('Yeni ürün adı:', product.name);
+                if (newName) {
+                    await api.updateProduct(productId, { ...product, name: newName });
+                    alert('Ürün başarıyla güncellendi!');
+                    loadProducts(); // Listeyi yenile
+                }
+            } catch (error) {
+                console.error('Ürün güncellenirken hata:', error);
+                alert('Ürün güncellenemedi!');
+            }
+        }
+
+        // Ürün sil
+        async function deleteProduct(productId) {
+            if (confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
+                try {
+                    await api.deleteProduct(productId);
+                    alert('Ürün başarıyla silindi!');
+                    loadProducts(); // Listeyi yenile
+                } catch (error) {
+                    console.error('Ürün silinirken hata:', error);
+                    alert('Ürün silinemedi!');
+                }
+            }
+        }
+
+        // Sayfa yüklendiğinde ürünleri listele
+        loadProducts();
+    </script>
+</body>
+</html>

@@ -157,7 +157,16 @@
         </div>
     </template>
 
+    <script src="/js/auctions.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof initializeAuctionsPage === 'function') {
+                initializeAuctionsPage();
+            } else {
+                console.error('initializeAuctionsPage fonksiyonu bulunamadı!');
+            }
+        });
+
         // Global yardımcı değişkenler
         // Bu değişkenleri kaldırıyorum, bunlar artık auctions.js dosyasında tanımlanıyor
         

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Açık Artırmalar</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Açık Artırmalar</h1>
+        
+        <!-- Açık artırma listesi -->
+        <div id="auctionList" class="card-grid">
+            <!-- Açık artırmalar buraya dinamik olarak eklenecek -->
+        </div>
+
+        <!-- Yeni açık artırma ekleme formu -->
+        <div class="card">
+            <h2>Yeni Açık Artırma Ekle</h2>
+            <form id="newAuctionForm">
+                <div class="form-group">
+                    <label for="title">Başlık:</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Açıklama:</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="startingPrice">Başlangıç Fiyatı:</label>
+                    <input type="number" id="startingPrice" name="startingPrice" required>
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Başlangıç Tarihi:</label>
+                    <input type="datetime-local" id="startDate" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">Bitiş Tarihi:</label>
+                    <input type="datetime-local" id="endDate" name="endDate" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Açık Artırma Oluştur</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/apiService.js"></script>
+    <script>
+        // ApiService instance'ı oluştur
+        const api = new ApiService('http://localhost:8082/insanet');
+
+        // Açık artırmaları listele
+        async function loadAuctions() {
+            try {
+                const auctions = await api.getAuctions();
+                const auctionList = document.getElementById('auctionList');
+                auctionList.innerHTML = ''; // Listeyi temizle
+
+                auctions.forEach(auction => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <h3>${auction.title}</h3>
+                        <p>${auction.description}</p>
+                        <p>Başlangıç Fiyatı: ${auction.startingPrice} TL</p>
+                        <p>Başlangıç: ${new Date(auction.startDate).toLocaleString()}</p>
+                        <p>Bitiş: ${new Date(auction.endDate).toLocaleString()}</p>
+                        <button onclick="placeBid(${auction.id})" class="btn btn-primary">Teklif Ver</button>
+                    `;
+                    auctionList.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Açık artırmalar yüklenirken hata:', error);
+                alert('Açık artırmalar yüklenemedi!');
+            }
+        }
+
+        // Yeni açık artırma oluştur
+        document.getElementById('newAuctionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                startingPrice: Number(document.getElementById('startingPrice').value),
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value
+            };
+
+            try {
+                await api.createAuction(formData);
+                alert('Açık artırma başarıyla oluşturuldu!');
+                loadAuctions(); // Listeyi yenile
+                e.target.reset(); // Formu temizle
+            } catch (error) {
+                console.error('Açık artırma oluşturulurken hata:', error);
+                alert('Açık artırma oluşturulamadı!');
+            }
+        });
+
+        // Teklif ver
+        async function placeBid(auctionId) {
+            const amount = prompt('Teklif miktarını girin (TL):');
+            if (amount) {
+                try {
+                    await api.createBid(auctionId, { amount: Number(amount) });
+                    alert('Teklifiniz başarıyla kaydedildi!');
+                    loadAuctions(); // Listeyi yenile
+                } catch (error) {
+                    console.error('Teklif verilirken hata:', error);
+                    alert('Teklif verilemedi!');
+                }
+            }
+        }
+
+        // Sayfa yüklendiğinde açık artırmaları listele
+        loadAuctions();
+    </script>
+</body>
+</html>

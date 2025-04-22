@@ -7,6 +7,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function initializeProfilePage() {
     console.log("Initializing profile page...");
+    
+    // Oturum kontrolü
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.log('Token bulunamadı, login sayfasına yönlendiriliyor...');
+        window.location.href = '#/login';
+        return;
+    }
+
+    // Token geçerliliğini kontrol et
+    try {
+        const isValid = await apiService.validateToken();
+        if (!isValid) {
+            throw new Error('Geçersiz token');
+        }
+    } catch (error) {
+        console.error('Token doğrulama hatası:', error);
+        localStorage.removeItem('token');
+        window.location.href = '#/login';
+        return;
+    }
+
     const profileContainer = document.querySelector('.profile-container');
     if (!profileContainer) {
         console.error("Profile container not found!");

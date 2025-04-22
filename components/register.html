@@ -404,9 +404,8 @@
                 if (response.ok) {
                     verifiedPhone = phone;
                     showMessage('Telefon doğrulaması başarılı', 'success');
-                    console.log('Phone verified:', verifiedPhone);
                     document.querySelector('.password-section').style.display = 'block';
-                    document.getElementById('password').focus();
+                    console.log('Phone verified:', verifiedPhone);
                 } else {
                     throw new Error(data.message || 'Doğrulama başarısız');
                 }
@@ -469,7 +468,6 @@
                     verifiedEmail = email;
                     showMessage('E-posta doğrulaması başarılı', 'success');
                     document.querySelector('.password-section').style.display = 'block';
-                    document.getElementById('password').focus();
                 } else {
                     throw new Error(data.message || 'Doğrulama başarısız');
                 }
