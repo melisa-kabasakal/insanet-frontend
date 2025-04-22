@@ -9,7 +9,7 @@ async function initializeProfilePage() {
     console.log("Initializing profile page...");
     
     // Oturum kontrolü
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth_token');
     if (!token) {
         console.log('Token bulunamadı, login sayfasına yönlendiriliyor...');
         window.location.href = '#/login';

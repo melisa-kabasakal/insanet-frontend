@@ -9,7 +9,7 @@ class ApiService {
      */
     constructor(baseUrl) {
         this.baseUrl = baseUrl;
-        this.token = localStorage.getItem('token');
+        this.token = localStorage.getItem('auth_token');
         this.init();
     }
 
@@ -92,26 +92,18 @@ class ApiService {
 
 
   // Auth endpoints
-  async login(credentials) {
+  async login(emailOrPhone, password) {
     try {
-      const response = await fetch(`${this.baseUrl}/auth/login`, {
+      const response = await this.fetchWithAuth('/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify({ emailOrPhone, password })
       });
 
-      if (!response.ok) {
-        throw new Error('Login failed');
-      }
-
-      const data = await response.json();
-      if (data.token) {
-        this.setToken(data.token);
+      if (response && response.token) {
+        this.setToken(response.token);
       }
       
-      return data;
+      return response;
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -232,7 +224,7 @@ class ApiService {
   // Token methods
   setToken(token) {
     this.token = token;
-    localStorage.setItem('token', token);
+    localStorage.setItem('auth_token', token);
   }
 
 
@@ -934,25 +926,11 @@ class ApiService {
 
     // Mevcut Kullanıcı Profilini Al
     async getUserProfile() {
-        // Önce localStorage kontrol et
-        const storedUserInfo = localStorage.getItem('userInfo');
-        if (storedUserInfo) {
-            try {
-                const userInfo = JSON.parse(storedUserInfo);
-                // Token hala geçerli mi diye API'ye sorulabilir (isteğe bağlı)
-                return { ...userInfo, isLoggedIn: true };
-            } catch (e) {
-                console.error("Error parsing stored user info:", e);
-                localStorage.removeItem('userInfo'); // Bozuk veriyi temizle
-            }
-        }
-
-        // Token var ama localStorage'da bilgi yoksa API'den çekmeyi dene
         if (this.token) {
             try {
                 console.log("Fetching user profile from API...");
                 const profile = await this.fetchWithAuth('/profile');
-                localStorage.setItem('userInfo', JSON.stringify(profile));
+                console.log('Backend profile response:', profile);
                 return { ...profile, isLoggedIn: true };
             } catch (error) {
                 console.error("Error fetching user profile from API:", error);
@@ -960,7 +938,6 @@ class ApiService {
                 return { isLoggedIn: false };
             }
         }
-
         return { isLoggedIn: false };
     }
 

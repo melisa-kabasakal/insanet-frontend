@@ -79,25 +79,19 @@
         messageEl.className = 'auth-message info';
 
         try {
-            const response = await fetch('http://localhost:8082/insanet/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ emailOrPhone: email, password })
-            });
+            const data = await apiService.login(email, password);
 
-            const data = await response.json();
-
-            if (response.ok && data.token) {
-                localStorage.setItem('auth_token', data.token);
+            if (data && data.token) {
+                // UI'ı güncelle
+                if (typeof window.showLoggedInUI === 'function') {
+                    window.showLoggedInUI();
+                }
 
                 messageEl.textContent = 'Giriş başarılı! Yönlendiriliyorsunuz...';
                 messageEl.className = 'auth-message success';
 
                 setTimeout(() => {
                     window.location.hash = '/';
-                    window.location.reload();
                 }, 1000);
             } else {
                 throw new Error(data.message || 'Giriş başarısız');
@@ -121,25 +115,19 @@
         messageEl.className = 'auth-message info';
 
         try {
-            const response = await fetch('http://localhost:8082/insanet/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ emailOrPhone: phoneNumber, password })
-            });
+            const data = await apiService.login(phoneNumber, password);
 
-            const data = await response.json();
-
-            if (response.ok && data.token) {
-                localStorage.setItem('auth_token', data.token);
+            if (data && data.token) {
+                // UI'ı güncelle
+                if (typeof window.showLoggedInUI === 'function') {
+                    window.showLoggedInUI();
+                }
 
                 messageEl.textContent = 'Giriş başarılı! Yönlendiriliyorsunuz...';
                 messageEl.className = 'auth-message success';
 
                 setTimeout(() => {
                     window.location.hash = '/';
-                    window.location.reload();
                 }, 1000);
             } else {
                 throw new Error(data.message || 'Giriş başarısız');

@@ -104,19 +104,22 @@ class Router {
         if (originalPath.startsWith('/profile')) {
             // Kullanıcı bilgilerini al (getUserProfile kullan)
             const userInfo = await apiService.getUserProfile(); 
+            console.log('Profile check - User Info:', userInfo);
             
-            // Kullanıcı giriş yapmamışsa veya tipi 'contractor' değilse login'e yönlendir
-            if (!userInfo || !userInfo.isLoggedIn || userInfo.userType !== 'contractor') {
-                console.warn('Yetkisiz erişim denemesi: /profile');
-                // Kullanıcı giriş yapmamışsa login'e yönlendir
-                if (!userInfo || !userInfo.isLoggedIn) {
-                    this.navigateTo('/login'); 
-                } else {
-                    // Giriş yapmış ama müteahhit değilse ana sayfaya yönlendir
-                    alert("Bu sayfaya erişim yetkiniz bulunmamaktadır.");
-                    this.navigateTo('/'); 
-                }
-                return; // İşlemi durdur
+            // Giriş yapılmamışsa
+            if (!userInfo || !userInfo.isLoggedIn) {
+                console.warn('Yetkisiz erişim: Giriş yapılmamış');
+                this.navigateTo('/login'); 
+                return;
+            }
+
+            // Kullanıcı rolünü kontrol et
+            const userRole = userInfo.role;
+            if (userRole !== 'MUTEAHHIT') {
+                console.warn('Yetkisiz erişim: Yanlış kullanıcı tipi -', userRole);
+                alert("Bu sayfaya erişim yetkiniz bulunmamaktadır.");
+                this.navigateTo('/'); 
+                return;
             }
         }
         // --- Profil Sayfası Erişim Kontrolü Sonu ---
